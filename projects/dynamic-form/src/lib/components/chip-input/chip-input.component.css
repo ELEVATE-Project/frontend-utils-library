@@ -1,0 +1,6 @@
+.chip-options-list{
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    flex-wrap: wrap;
+}

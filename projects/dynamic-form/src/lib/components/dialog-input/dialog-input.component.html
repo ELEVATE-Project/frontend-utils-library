@@ -1,0 +1,25 @@
+<div class="dialog-header">
+  <mat-label mat-dialog-title>{{ dialogData?.header }}</mat-label>
+  <mat-icon class="mat-cancel-icon" [mat-dialog-close]="false"
+    >cancel_circle_outline</mat-icon
+  >
+</div>
+<div mat-dialog-content>
+  <mat-form-field style="width: 100%" floatLabel="always">
+    <mat-label>{{ dialogData?.label }}</mat-label>
+    <input
+      matInput
+      [(ngModel)]="data"
+      [required]="dialogData?.required"
+      [maxlength]="dialogData?.maxLength"
+    />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="buttons-section">
+  <button mat-raised-button [mat-dialog-close]="false">
+    {{ dialogData?.buttonText?.cancel }}
+  </button>
+  <button mat-raised-button [mat-dialog-close]="data" cdkFocusInitial>
+    {{ dialogData?.buttonText?.ok }}
+  </button>
+</div>

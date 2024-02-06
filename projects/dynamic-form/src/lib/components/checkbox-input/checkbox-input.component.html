@@ -1,0 +1,14 @@
+<div [formGroup]="form" style="margin-top: 10px">
+  <div
+    *ngFor="let option of checkboxControl?.options; let idx = index"
+    [formArrayName]="checkboxControl?.name"
+  >
+    <mat-checkbox
+      [formControlName]="idx"
+      [value]="option.value"
+      (change)="onCheckboxChange($event, option, idx)"
+    >
+      {{ option?.label }}
+    </mat-checkbox>
+  </div>
+</div>

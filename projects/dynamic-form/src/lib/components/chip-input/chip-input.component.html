@@ -1,0 +1,36 @@
+<mat-chip-list
+  #chipList
+  [multiple]="chipControl?.multiple"
+  [required]="chipControl?.validators?.required"
+  style="margin-top: 10px"
+>
+  <div class="chip-options-list">
+    <mat-chip
+      *ngFor="let chip of chipControl?.options"
+      [value]="chip.value"
+      (click)="onChipClick(chip)"
+      [selected]="this.selectedChips.has(chip)"
+    >
+      <div>{{ chip?.label }}</div>
+      <mat-icon
+        matChipRemove
+        *ngIf="this.selectedChips.has(chip)"
+        (click)="onChipClick(chip)"
+      >
+        cancel
+      </mat-icon>
+    </mat-chip>
+    <mat-chip
+      *ngIf="chipControl?.meta?.showAddOption"
+      (click)="addOption()"
+      style="cursor: pointer"
+    >
+      <mat-icon>add_circle</mat-icon> Add
+    </mat-chip>
+  </div>
+  <mat-slide-toggle
+    *ngIf="chipControl?.meta?.showSelectAll"
+    [(ngModel)]="enableSelectAll"
+    (change)="toggleSelectAll()"
+  ></mat-slide-toggle>
+</mat-chip-list>
