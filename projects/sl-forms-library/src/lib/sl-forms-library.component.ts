@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
   selector: 'lib-sl-forms-library',
   template: `
     <p>
-      sl-forms-library works!
+      Hello this is working .
     </p>
   `,
   styles: [

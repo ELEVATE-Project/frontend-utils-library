@@ -3,16 +3,24 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormsDemoImplemetationComponent } from './forms-demo-implemetation/forms-demo-implemetation.component';
+
+import { SlFormsLibraryModule } from 'sl-forms-library';
+
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    FormsDemoImplemetationComponent
+    
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SlFormsLibraryModule,
+    
+    
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
