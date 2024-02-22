@@ -1,31 +1,49 @@
+<<<<<<< HEAD
 
 # FrontendUtilsLibrary
+=======
+<h1 align="center" id="title">sl-forms-library</h1>
+>>>>>>> 7a7b6e50a721059e0b8af66734eb80e92676f2c3
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.13.
+<p id="description">This library will contain multiple npm package codes one being the form library. This repo contains the demo implementation of the library.</p>
 
-## Development server
+<h2>Project Flow Diagram</h2>
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+<img src="https://github.com/Sumsum1231/images/blob/main/FlowChart.png" alt="project-screenshot" width="400" height="400/">
 
-## Code scaffolding
+<h2>🛠️ Installation Steps:</h2>
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+<p>1. Specifically Angular 14</p>
 
-## Build
+```
+npm install -g @angular/cli@14
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+<p>2. To build the library</p>
 
-## Running unit tests
+```
+ng build
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+<p>3. To serve the application</p>
 
-## Running end-to-end tests
+```
+ng serve -o
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+<p>4. Code scaffolding</p>
 
-## Further help
+```
+ng generate component component-name
+```
 
+<<<<<<< HEAD
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 =======
 # frontend-utils-library
 
+=======
+<h2>🍰 Contribution Guidelines:</h2>
+
+There are two folders in the projects folder. projects - sl-forms-demo - sl-forms-library So the sl-forms-library will contain the implementation part and sl-forms-demo will contain the demo implementation of the library
+>>>>>>> 7a7b6e50a721059e0b8af66734eb80e92676f2c3
