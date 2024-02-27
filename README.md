@@ -1,7 +1,7 @@
-<<<<<<< HEAD
+
 
 # FrontendUtilsLibrary
-=======
+
 <h1 align="center" id="title">sl-forms-library</h1>
 >>>>>>> 7a7b6e50a721059e0b8af66734eb80e92676f2c3
 
@@ -37,13 +37,13 @@ ng serve -o
 ng generate component component-name
 ```
 
-<<<<<<< HEAD
+
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-=======
+
 # frontend-utils-library
 
-=======
+
 <h2>🍰 Contribution Guidelines:</h2>
 
 There are two folders in the projects folder. projects - sl-forms-demo - sl-forms-library So the sl-forms-library will contain the implementation part and sl-forms-demo will contain the demo implementation of the library
->>>>>>> 7a7b6e50a721059e0b8af66734eb80e92676f2c3
+
