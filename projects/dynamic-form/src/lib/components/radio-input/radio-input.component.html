@@ -1,0 +1,16 @@
+<div [formGroup]="form" style="margin-top: 10px">
+  <mat-radio-group
+    [value]="radioControl?.value"
+    [formControlName]="radioControl?.name"
+    [required]="radioControl?.validators?.required"
+    (change)="onRadioChange($event)"
+    class="radio-options-list"
+  >
+    <mat-radio-button
+      *ngFor="let option of radioControl?.options"
+      [value]="option.value"
+      style="margin-bottom: 10px"
+      >{{ option?.label }}</mat-radio-button
+    >
+  </mat-radio-group>
+</div>

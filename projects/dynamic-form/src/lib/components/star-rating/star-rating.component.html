@@ -1,0 +1,7 @@
+<div class="rating-list">
+  <div *ngFor="let star of ratingList; let idx = index">
+    <mat-icon class="rating-icon" (click)="onRatingChange(idx)">{{
+      displayIcons(idx)
+    }}</mat-icon>
+  </div>
+</div>
