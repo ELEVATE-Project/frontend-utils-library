@@ -3,7 +3,7 @@
 # FrontendUtilsLibrary
 
 <h1 align="center" id="title">sl-forms-library</h1>
->>>>>>> 7a7b6e50a721059e0b8af66734eb80e92676f2c3
+
 
 <p id="description">This library will contain multiple npm package codes one being the form library. This repo contains the demo implementation of the library.</p>
 
