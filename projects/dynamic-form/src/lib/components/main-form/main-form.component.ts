@@ -84,6 +84,7 @@ const CUSTOM_DATE_FORMATS: NgxMatDateFormats = {
 export class MainFormComponent implements OnInit {
   @Input() formJson: any;
   myForm: FormGroup = this.fb.group({});
+  htmlContent=""
 
   public showSpinners = true;
   public showSeconds = false;

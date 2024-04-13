@@ -27,6 +27,10 @@ import {
 } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { HttpClientModule } from '@angular/common/http';
+
+
 @NgModule({
   declarations: [
     DynamicFormComponent,
@@ -57,6 +61,9 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     NgxMatMomentModule,
+    AngularEditorModule,
+    FormsModule,
+    HttpClientModule
   ],
   exports: [MainFormComponent],
 })
