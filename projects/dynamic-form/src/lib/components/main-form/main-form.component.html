@@ -1,51 +1,29 @@
 <div>
   <form [formGroup]="myForm">
     <div *ngFor="let control of formJson">
-      <mat-form-field
-        *ngIf="control?.type === 'text' || control?.type === 'password'"
-        floatLabel="always"
-      >
+      <mat-form-field *ngIf="control?.type === 'text' || control?.type === 'password'" floatLabel="always">
         <mat-label>{{ control?.label }}</mat-label>
-        <input
-          matInput
-          [placeholder]="control?.placeHolder"
-          [type]="control?.type"
-          [formControlName]="control?.name"
-          [maxlength]="control?.validators.maxLength"
-          [required]="control?.validators?.required"
-          style="margin-top: 10px"
-        />
-        <mat-icon
-          matSuffix
-          *ngIf="control?.type === 'password' || control?.showPasswordIcon"
-          (click)="togglePasswordVisibility(control)"
-          style="cursor: pointer"
-        >
+        <input matInput [placeholder]="control?.placeHolder" [type]="control?.type" [formControlName]="control?.name"
+          [maxlength]="control?.validators.maxLength" [required]="control?.validators?.required"
+          style="margin-top: 10px" />
+        <mat-icon matSuffix *ngIf="control?.type === 'password' || control?.showPasswordIcon"
+          (click)="togglePasswordVisibility(control)" style="cursor: pointer">
           {{ control?.type === "password" ? "visibility_off" : "visibility" }}
         </mat-icon>
       </mat-form-field>
 
       <mat-form-field *ngIf="control?.type === 'textarea'" floatLabel="always">
         <mat-label>{{ control?.label }}</mat-label>
-        <textarea
-          matInput
-          [formControlName]="control?.name"
-          [placeholder]="control?.placeHolder"
-          [maxlength]="control?.validators?.maxLength"
-          [required]="control?.validators?.required"
-          style="margin-top: 10px"
-        >
+        <textarea matInput [formControlName]="control?.name" [placeholder]="control?.placeHolder"
+          [maxlength]="control?.validators?.maxLength" [required]="control?.validators?.required"
+          style="margin-top: 10px">
         </textarea>
       </mat-form-field>
 
       <mat-form-field *ngIf="control?.type === 'select'" floatLabel="always">
         <mat-label>{{ control?.label }}</mat-label>
-        <mat-select
-          [value]="control?.value"
-          [formControlName]="control?.name"
-          [required]="control?.validators?.required"
-          [compareWith]="compareWith"
-        >
+        <mat-select [value]="control?.value" [formControlName]="control?.name"
+          [required]="control?.validators?.required" [compareWith]="compareWith">
           <mat-option *ngFor="let option of control?.options" [value]="option">
             {{ option.label }}
           </mat-option>
@@ -54,131 +32,83 @@
 
       <mat-form-field *ngIf="control?.type === 'chip'" floatLabel="always">
         <mat-label>{{ control?.label }}</mat-label>
-        <lib-chip-input
-          [chipControl]="control"
-          [formControlName]="control?.name"
-        ></lib-chip-input>
-        <textarea
-          matInput
-          [formControlName]="control?.name"
-          hidden
-          [required]="control?.validators?.required"
-        ></textarea>
+        <lib-chip-input [chipControl]="control" [formControlName]="control?.name"></lib-chip-input>
+        <textarea matInput [formControlName]="control?.name" hidden
+          [required]="control?.validators?.required"></textarea>
       </mat-form-field>
 
-      <mat-form-field
-        *ngIf="control.type === 'date'"
-        floatLabel="always"
-        appearance="fill"
-      >
+      <mat-form-field *ngIf="control.type === 'date'" floatLabel="always" appearance="fill">
         <mat-label>{{ control?.label }}</mat-label>
-        <input
-          matInput
-          [ngxMatDatetimePicker]="picker"
-          [formControlName]="control.name"
-          [value]="control.value"
-          [min]="
+        <input matInput [ngxMatDatetimePicker]="picker" [formControlName]="control.name" [value]="control.value" [min]="
             control.name === dependedChild ? dependedChildDate : currentDate
-          "
-          [max]="maxDate"
-          (dateChange)="dateSelected($event, control)"
-          (click)="dateInputClick(control, picker)"
-        />
+          " [max]="maxDate" (dateChange)="dateSelected($event, control)" (click)="dateInputClick(control, picker)" />
         <mat-datepicker-toggle matSuffix [for]="$any(picker)">
         </mat-datepicker-toggle>
-        <ngx-mat-datetime-picker
-          #picker
-          [showSpinners]="showSpinners"
-          [showSeconds]="showSeconds"
-          [stepHour]="stepHour"
-          [stepMinute]="stepMinute"
-          [stepSecond]="stepSecond"
-          [touchUi]="touchUi"
-          [enableMeridian]="enableMeridian"
-        >
+        <ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds" [stepHour]="stepHour"
+          [stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi" [enableMeridian]="enableMeridian">
         </ngx-mat-datetime-picker>
       </mat-form-field>
 
       <mat-form-field *ngIf="control?.type === 'range'" floatLabel="always">
         <mat-label>{{ control?.label }}</mat-label>
-        <mat-slider
-          style="width: 100%"
-          [formControlName]="control?.name"
-          [value]="control?.value"
-          [min]="control?.min"
-          [max]="control?.max"
-          [step]="control?.step"
-          [thumbLabel]="control?.showThumbLabel"
-        >
+        <mat-slider style="width: 100%" [formControlName]="control?.name" [value]="control?.value" [min]="control?.min"
+          [max]="control?.max" [step]="control?.step" [thumbLabel]="control?.showThumbLabel">
         </mat-slider>
         <textarea matInput [formControlName]="control?.name" hidden></textarea>
       </mat-form-field>
 
       <mat-form-field *ngIf="control?.type === 'rating'" floatLabel="always">
         <mat-label>{{ control?.label }}</mat-label>
-        <lib-star-rating
-          [formControlName]="control.name"
-          [label]="control.label"
-          [starsCount]="control.noOfstars"
-        ></lib-star-rating>
+        <lib-star-rating [formControlName]="control.name" [label]="control.label"
+          [starsCount]="control.noOfstars"></lib-star-rating>
         <textarea matInput [formControlName]="control?.name" hidden></textarea>
       </mat-form-field>
 
       <mat-form-field *ngIf="control?.type === 'checkbox'" floatLabel="always">
         <mat-label>{{ control?.label }}</mat-label>
         <input matInput [formControlName]="control?.name" hidden />
-        <lib-checkbox-input
-          [checkboxControl]="control"
-          [formControlName]="control?.name"
-        ></lib-checkbox-input>
+        <lib-checkbox-input [checkboxControl]="control" [formControlName]="control?.name"></lib-checkbox-input>
       </mat-form-field>
 
       <mat-form-field *ngIf="control?.type === 'radio'" floatLabel="always">
         <mat-label>{{ control?.label }}</mat-label>
         <input matInput [formControlName]="control?.name" hidden />
-        <lib-radio-input
-          [radioControl]="control"
-          [formControlName]="control?.name"
-        ></lib-radio-input>
+        <lib-radio-input [radioControl]="control" [formControlName]="control?.name"></lib-radio-input>
       </mat-form-field>
 
       <mat-form-field *ngIf="control?.type == 'toggle'" floatLabel="always">
         <mat-label>{{ control?.label }}</mat-label>
-        <mat-slide-toggle
-          [formControlName]="control?.name"
-          [checked]="control?.value"
-          [required]="control?.validators?.required"
-          style="margin-top: 10px"
-        >
+        <mat-slide-toggle [formControlName]="control?.name" [checked]="control?.value"
+          [required]="control?.validators?.required" style="margin-top: 10px">
         </mat-slide-toggle>
-        <textarea
-          matInput
-          [formControlName]="control?.name"
-          hidden
-          [required]="control?.validators?.required"
-        ></textarea>
+        <textarea matInput [formControlName]="control?.name" hidden
+          [required]="control?.validators?.required"></textarea>
       </mat-form-field>
 
-      <mat-error
-        *ngIf="
+      <mat-form-field *ngIf="control?.type == 'richtextbox'" floatLabel="always">
+        <mat-label>{{ control?.label }}</mat-label>
+        <angular-editor matInput [formControlName]="control?.name" [placeholder]="control?.placeHolder"
+          [maxlength]="control?.validators?.maxLength" [required]="control?.validators?.required"
+          [(ngModel)]="htmlContent" [config]="control?.config"></angular-editor>
+        <textarea matInput [formControlName]="control?.name" hidden
+          [required]="control?.validators?.required"></textarea>
+      </mat-form-field>
+
+      <mat-error *ngIf="
           myForm.get(control?.name)?.touched &&
           myForm.get(control?.name)?.invalid
-        "
-      >
-        <div
-          class="error-message"
-          *ngIf="
+        ">
+        <div class="error-message" *ngIf="
             control?.errorMessage[
               ((myForm.get(control.name)?.errors | keyvalue) || [])[0].key
             ];
             else genericErrorMessage
-          "
-        >
+          ">
           <mat-icon class="error-icon" matPrefix>error_outline</mat-icon>
           {{
-            control?.errorMessage[
-              ((myForm.get(control.name)?.errors | keyvalue) || [])[0].key
-            ]
+          control?.errorMessage[
+          ((myForm.get(control.name)?.errors | keyvalue) || [])[0].key
+          ]
           }}
         </div>
         <ng-template #genericErrorMessage>
