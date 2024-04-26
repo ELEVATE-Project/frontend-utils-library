@@ -1,0 +1,31 @@
+h1{
+    text-align: center;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    
+}
+
+.forms{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 45%;
+    height: 300px;
+}
+
+input{
+    width: 165px;
+    height: 30px;
+    border-radius: 5px;
+    border: solid 1px;
+    margin: 10px;
+}
+
+.btn{
+    width: 125px;
+    height: 35px;
+    border-radius: 15px;
+}

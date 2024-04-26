@@ -1,0 +1,22 @@
+
+.btn{
+    background: #000;
+    font-family: monospace;
+    margin-right: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 9px;
+    border-radius: 15px;
+}
+
+a{
+    text-decoration: none;
+    color: #fff;
+}
+
+.navbar{
+    display: flex;
+    justify-content: end;
+    background-color: rgb(199, 212, 212);
+    
+}
