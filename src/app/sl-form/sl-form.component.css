@@ -1,0 +1,30 @@
+.forms{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #ccc;
+    width: 300px;
+    padding: 0px 66px;
+    background: #eee;
+}
+
+div{
+    display: flex;
+    justify-content: center;
+}
+
+label{
+    margin-top: 20px;
+}
+
+input{
+    margin-top: 5px;
+}
+
+.btn{
+    margin: 40px 0px;
+    background: rgb(103, 103, 103);
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 20px;
+}

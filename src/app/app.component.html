@@ -1,0 +1,9 @@
+<div class="container">
+  
+<div *ngIf="!isFormRoute">
+  <h1>Thank You!</h1>
+  <p>Please <a routerLink="/form">click here</a> to fill out the feedback form.</p>
+</div>
+
+<router-outlet></router-outlet>
+</div>
