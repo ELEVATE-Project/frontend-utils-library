@@ -38,16 +38,32 @@
     <mat-form-field *ngIf="control?.type === 'select'" floatLabel="always">
       <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
       <mat-select
-        [value]="control?.value"
-        [placeholder]="control?.placeHolder"
-        [formControlName]="control?.name"
-        [required]="control?.validators?.required"
-        [compareWith]="compareWith"
-      >
-        <mat-option *ngFor="let option of control?.options" [value]="option">
-          {{ option.label }}
-        </mat-option>
-      </mat-select>
+      [value]="control?.value"
+      [placeholder]="control?.placeHolder"
+      [formControlName]="control?.name"
+      [required]="control?.validators?.required"
+      [compareWith]="compareWith"
+      (selectionChange)="onSelectChange($event, control)"
+      (focus)="onSelectFocus(control?.name)"
+      *ngIf="shouldEmitEvents()"
+    >
+      <mat-option *ngFor="let option of control?.options" [value]="option">
+        {{ option.label }}
+      </mat-option>
+    </mat-select>
+    <mat-select
+      [value]="control?.value"
+      [placeholder]="control?.placeHolder"
+      [formControlName]="control?.name"
+      [required]="control?.validators?.required"
+      [compareWith]="compareWith"
+      *ngIf="!shouldEmitEvents()"
+    >
+      <mat-option *ngFor="let option of control?.options" [value]="option">
+        {{ option.label }}
+      </mat-option>
+    </mat-select>
+    
     </mat-form-field>
 
     <mat-form-field *ngIf="control?.type === 'chip'" floatLabel="always">

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
@@ -63,9 +63,12 @@ export interface DynamicFormData {
 export class MainFormComponent implements OnInit {
   @Input() formJson: any;
   @Input() classFlex: any ;
+  @Output() onChange = new EventEmitter<{ event: any, control: any }>();
+  @Output() onFocus = new EventEmitter<string>();
+
   myForm: FormGroup = this.fb.group({});
   resources:any;
-  @ViewChild('subform') subform: MainFormComponent | undefined
+  @ViewChild('subform') subform: MainFormComponent | undefined;
 
   public showSpinners = true;
   public showSeconds = false;
@@ -202,4 +205,15 @@ constructor(private fb: FormBuilder,public dialog: MatDialog) {}
     });
   }
 
+  onSelectChange(event: any, control: any) {
+    this.onChange.emit({event, control});
+  }
+
+  onSelectFocus(controlName: any) {
+    this.onFocus.emit(controlName);
+  }
+
+  shouldEmitEvents(): boolean {
+    return this.onChange.length > 0 || this.onFocus.length > 0;
+  }
 }
