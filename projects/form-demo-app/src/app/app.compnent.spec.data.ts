@@ -87,7 +87,14 @@ export const sampleData = [
     {
         "name": "recommended_for",
         "label": "Recommended for",
-        "value":"",
+        "value": [{
+            "label": "Block education officer",
+            "value": "beo"
+        },
+        {
+            "label": "Cluster officials",
+            "value": "co"
+        }],
         "type": "chip",
         "disabled": false,
         "errorMessage": {
@@ -124,8 +131,7 @@ export const sampleData = [
             "addNewPopupSubHeader": "Who is this session for?",
             "showSelectAll": true,
             "showAddOption": true
-        },
-        "multiple": true
+        }
     },
     {
         "name": "range_value",

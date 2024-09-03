@@ -1,6 +1,6 @@
 {
-  "name": "@elevate/dynamic-form",
-  "version": "0.0.1",
+  "name": "elevate-dynamic-form",
+  "version": "0.0.13",
   "peerDependencies": {
     "@angular/common": "^17.3.4",
     "@angular/core": "^17.3.4",

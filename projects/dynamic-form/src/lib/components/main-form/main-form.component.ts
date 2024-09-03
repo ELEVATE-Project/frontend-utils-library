@@ -212,8 +212,4 @@ constructor(private fb: FormBuilder,public dialog: MatDialog) {}
   onSelectFocus(controlName: any) {
     this.onFocus.emit(controlName);
   }
-
-  shouldEmitEvents(): boolean {
-    return this.onChange.length > 0 || this.onFocus.length > 0;
-  }
 }
