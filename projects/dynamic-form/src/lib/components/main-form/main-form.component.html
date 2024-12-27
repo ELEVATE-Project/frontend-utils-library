@@ -1,6 +1,6 @@
 <form [formGroup]="myForm" [class]="classFlex" (focusout)="handleFocusOut($event)" [ngClass]="{'disabled-with-pointer-events': viewOnly}">
   <ng-container *ngFor="let control of formJson; let i = index" >
-    <div [class]="control.cssStyle" style="position: relative;">
+    <div [class]="control.cssStyle" style="position: relative;" [ngClass]="{'disabled-with-pointer-events': control.viewOnly}">
     <mat-form-field appearance="outline"
       *ngIf="control?.type === 'text' || control?.type === 'password'"
       floatLabel="always"
