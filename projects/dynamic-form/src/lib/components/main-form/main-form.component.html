@@ -15,7 +15,7 @@
         [required]="control?.validators?.required"
         [value]="control?.value"
         [(ngModel)]="control.value"
-        [readonly]="viewOnly"
+        [readonly]="control.viewOnly ? control.viewOnly : viewOnly"
         [id]="control?.name"
       />
       <mat-icon
@@ -42,7 +42,7 @@
         [required]="control?.validators?.required"
         [value]="control?.value"
         [(ngModel)]="control.value"
-        [readonly]="viewOnly"
+        [readonly]="control.viewOnly ? control.viewOnly : viewOnly"
       />
       <mat-icon
         matSuffix
@@ -64,7 +64,7 @@
         [required]="control?.validators?.required"
         [value]="control?.value"
         [(ngModel)]="control.value"
-        [readonly]="viewOnly"
+        [readonly]="control.viewOnly ? control.viewOnly : viewOnly"
         [id]="control?.name"
       >
       </textarea>
@@ -204,15 +204,15 @@
         [formControlName]="control?.name"
         hidden
         [required]="control?.validators?.required"
-        [readonly]="viewOnly"
+        [readonly]="control.viewOnly ? control.viewOnly : viewOnly"
       ></textarea>
     </mat-form-field>
 
     <mat-form-field class="example-full-width"  appearance="outline" floatLabel="always"  *ngIf="control?.type == 'date'">
       <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
-      <input matInput [placeholder]="control?.placeHolder" (click)="picker.open()" [formControlName]="control?.name" readonly [matDatepicker]="picker" [min]="checkminDate(control)" [max]="checkmaxDate(control)">
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+      <input matInput [placeholder]="control?.placeHolder" [readonly]="control.viewOnly ? control.viewOnly : viewOnly" (click)="picker.open()" [formControlName]="control?.name" readonly [matDatepicker]="picker" [min]="checkminDate(control)" [max]="checkmaxDate(control)">
+      <mat-datepicker-toggle matIconSuffix [for]="picker" [disabled]="control.viewOnly ? control.viewOnly : viewOnly"></mat-datepicker-toggle>
+      <mat-datepicker #picker [disabled]="control.viewOnly ? control.viewOnly : viewOnly"></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field *ngIf="control?.type == 'triggerParent'" floatLabel="always" class="no-bottom-line">
