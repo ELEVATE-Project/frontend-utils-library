@@ -296,5 +296,17 @@ constructor(private fb: FormBuilder,public dialog: MatDialog,  private eRef: Ele
     }
     return null;
   }
+
+
+  getAdjustedDate(control:any): any {
+    let endDate = this.myForm.get(control.name)
+    if(endDate){
+      const date = new Date(endDate.value);
+      date.setHours(23, 59, 59, 999);// Set to 11:59 PM UTC
+      this.myForm.patchValue({
+        [control.name]:date
+      });
+    }
+  }
   
 }

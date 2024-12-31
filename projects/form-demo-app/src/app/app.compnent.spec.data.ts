@@ -7,6 +7,7 @@ export const sampleData = [
         "type": "text",
         "placeHolder": "Enter project title",
         "position": "floating",
+        "viewOnly":true,
         "errorMessage": {
             "required": "Enter project title",
             "maxLength":"Length exceeded"
@@ -365,10 +366,11 @@ export const sampleData = [
             {
                 "name": "startDate",
                 "label": "Start date",
-                "value": "",
+                "value": "2024-12-16T18:30:00.000Z",
                 "class": "",
                 "type": "date",
                 "placeHolder": "enter start date",
+                "viewOnly":false,
                 "position": "floating",
                 "errorMessage": {
                     "required": "Enter start date "
