@@ -65,6 +65,7 @@ export class MainFormComponent implements OnInit {
   @Input() formJson: any;
   @Input() viewOnly: boolean = false;
   @Input() classFlex: any ;
+  @Input() allowOpenLinks:boolean = false;
   myForm: FormGroup = this.fb.group({});
   resources:any = [];
   @ViewChild('subform') subform: MainFormComponent | undefined
@@ -306,6 +307,12 @@ constructor(private fb: FormBuilder,public dialog: MatDialog,  private eRef: Ele
       this.myForm.patchValue({
         [control.name]:date
       });
+    }
+  }
+
+  openResourceLink(url:any){
+    if(this.allowOpenLinks){
+      window.open(url, '_blank');
     }
   }
   
