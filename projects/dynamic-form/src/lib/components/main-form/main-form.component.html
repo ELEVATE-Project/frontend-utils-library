@@ -192,8 +192,8 @@
       </div>
       <div class="flex flex-col gap-4">
         <div  *ngFor="let resource of resources;let i = index" class="resource-items-container">
-          <section class="resouce-inner-section">
-            <img src="assets/images/video-icon.png" alt="My Image">&nbsp;
+          <section class="resouce-inner-section cursor-pointer">
+            <img src="assets/images/video-icon.png" alt="My Image" (click)="openResourceLink(resource.url)">&nbsp;
             <p>{{resource.name}}</p>
           </section>
           <mat-icon (click)="deleteResource(i,control?.name)" class="cursor-pointer">close</mat-icon>
@@ -210,7 +210,7 @@
 
     <mat-form-field class="example-full-width"  appearance="outline" floatLabel="always"  *ngIf="control?.type == 'date'">
       <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
-      <input matInput [placeholder]="control?.placeHolder" [readonly]="control.viewOnly ? control.viewOnly : viewOnly" (click)="picker.open()" [formControlName]="control?.name" readonly [matDatepicker]="picker" [min]="checkminDate(control)" [max]="checkmaxDate(control)"  (dateChange)="(control.name === 'endDate' || control.name === 'end_date') ? getAdjustedDate(control):'' ">
+      <input matInput [placeholder]="control?.placeHolder" [readonly]="control.viewOnly ? control.viewOnly : viewOnly" (click)="picker.open()" [formControlName]="control?.name" readonly [matDatepicker]="picker" [min]="checkminDate(control)" [max]="checkmaxDate(control)"  (dateChange)="getAdjustedDate(control)">
       <mat-datepicker-toggle matIconSuffix [for]="picker" [disabled]="control.viewOnly ? control.viewOnly : viewOnly"></mat-datepicker-toggle>
       <mat-datepicker #picker [disabled]="control.viewOnly ? control.viewOnly : viewOnly"></mat-datepicker>
     </mat-form-field>
@@ -224,7 +224,7 @@
       <div class="flex flex-col gap-4 mt-4">
         <div  *ngFor="let item of control.value;let i = index" class="resource-items-container">
           <section class="resouce-inner-section cursor-pointer" (click)="OnActionTriggerParent('VIEW',i, item)">
-            <img src="assets/images/video-icon.png" alt="My Image" (click)="openResourceLink(item.url)">&nbsp;
+            <img src="assets/images/video-icon.png" alt="My Image">&nbsp;
             <p>{{item.label}}</p>
           </section>
           <div class="cursor-pointer flex flex-row gap-2">

@@ -300,10 +300,16 @@ constructor(private fb: FormBuilder,public dialog: MatDialog,  private eRef: Ele
 
 
   getAdjustedDate(control:any): any {
-    let endDate = this.myForm.get(control.name)
-    if(endDate){
-      const date = new Date(endDate.value);
+    let rawDate = this.myForm.get(control.name)
+    if(control.name === 'endDate' || control.name === 'end_date'){
+      const date = new Date(rawDate?.value);
       date.setHours(23, 59, 59, 999);// Set to 11:59 PM UTC
+      this.myForm.patchValue({
+        [control.name]:date
+      });
+    }else{
+      let date= new Date(rawDate?.value);
+      date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
       this.myForm.patchValue({
         [control.name]:date
       });
