@@ -21,6 +21,7 @@ import { CheckboxInputComponent } from './components/checkbox-input/checkbox-inp
 import { StarRatingComponent } from './components/star-rating/star-rating.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AddResourceComponent } from './components/add-resource/add-resource.component';
+import { LanguageTranslatePipe } from './pipes/language-translate.pipe';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { AddResourceComponent } from './components/add-resource/add-resource.com
     CheckboxInputComponent,
     StarRatingComponent,
     AddResourceComponent,
+    LanguageTranslatePipe
   ],
   imports: [
     CommonModule,
@@ -50,7 +52,8 @@ import { AddResourceComponent } from './components/add-resource/add-resource.com
     MatRadioModule,
     MatDatepickerModule,
   ],
-  exports: [MainFormComponent],
-  schemas:[NO_ERRORS_SCHEMA]
+  exports: [MainFormComponent, LanguageTranslatePipe],
+  schemas:[NO_ERRORS_SCHEMA],
+  providers:[LanguageTranslatePipe]
 })
 export class DynamicFormModule {}

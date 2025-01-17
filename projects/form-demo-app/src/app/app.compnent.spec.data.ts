@@ -1,13 +1,13 @@
 export const sampleData = [
     {
         "name": "title",
-        "label": "Enter your name",
+        "label": {en:"Enter your name", hi: "अपना नाम दर्ज करें"},
         "value": "",
         "type": "text",
         "placeHolder": "Ex. John",
         "errorMessage": {
-            "required": "Enter your name",
-            "minlength":"Min length should be 5",
+            "required": {en:"Enter your name", hi: "अपना नाम दर्ज करें"},
+            "minlength":{en:"Min length should be 5", hi: "न्यूनतम लंबाई 5 होनी चाहिए"},
         },
         "validators": {
             "required": true,
@@ -16,12 +16,12 @@ export const sampleData = [
     },
     {
         "name": "description",
-        "label": "Description",
+        "label": {en:"Description", hi: "विवरण"},
         "value":"",
         "type": "textarea",
-        "placeHolder": "Tell the community something about yourself",
+        "placeHolder": {en:"Tell the community something about yourself", hi: "समुदाय को अपने बारे में कुछ बताएं"},
         "errorMessage": {
-            "required": "Enter description"
+            "required": {en:"Enter description", hi: "विवरण दर्ज करें"}
         },
         "validators": {
             "required": false,
@@ -30,12 +30,12 @@ export const sampleData = [
     },
     {
         "name": "password",
-        "label": "Enter the password",
+        "label": {en:"Enter the password", hi: "पासवर्ड दर्ज करें"},
         "value":"",
         "type": "password",
-        "placeHolder": "Type your password here",
+        "placeHolder": {en:"Type your password here", hi: "यहां अपना पासवर्ड टाइप करें"},
         "errorMessage": {
-            "required": "Password is required",
+            "required": {en:"Password is required", hi: "पासवर्ड आवश्यक है"},
         },
         "validators": {
             "required": false,
@@ -43,11 +43,11 @@ export const sampleData = [
     },
     {
         "name": "location",
-        "label": "Select your location",
+        "label": {en:"Select your location", hi: "अपना स्थान चुनें"},
         "value":"",
         "type": "select",
         "errorMessage": {
-            "required": "Please select your location"
+            "required": {en:"Please select your location", hi: "कृपया अपना स्थान चुनें"}
         },
         "validators": {
             "required": false
@@ -86,19 +86,12 @@ export const sampleData = [
     },
     {
         "name": "recommended_for",
-        "label": "Recommended for",
-        "value": [{
-            "label": "Block education officer",
-            "value": "beo"
-        },
-        {
-            "label": "Cluster officials",
-            "value": "co"
-        }],
+        "label": {en:"Recommended for", hi: "के लिए अनुशंसित"},
+        "value":"",
         "type": "chip",
         "disabled": false,
         "errorMessage": {
-            "required": "Enter recommended for"
+            "required": {en:"Enter recommended for", hi: "के लिए अनुशंसा दर्ज करें"}
         },
         "validators": {
             "required": false
@@ -131,17 +124,18 @@ export const sampleData = [
             "addNewPopupSubHeader": "Who is this session for?",
             "showSelectAll": true,
             "showAddOption": true
-        }
+        },
+        "multiple": true
     },
     {
         "name": "range_value",
-        "label": "Select difficulty level",
+        "label": {en:"Select difficulty level", hi: "कठिनाई स्तर चुनें"},
         "value":"0",
         "type": "range",
         "min": "0",
         "max": "50",
         "step": "1",
-        "placeHolder": "Select a range value",
+        "placeHolder": {en:"Select a range value", hi: "एक श्रेणी मान चुनें"},
         "errorMessage": {
             "required": "Select a value"
         },
@@ -152,11 +146,11 @@ export const sampleData = [
     },
     {
         "name": "rating",
-        "label": "How do you rate this",
+        "label": {en:"How do you rate this", hi: "आप इसे कैसे रेट करेंगे"},
         "value":"",
         "type": "rating",
         "errorMessage": {
-            "required": "Select a rating value"
+            "required": {en:"Select a rating value", hi: "रेटिंग मान चुनें"}
         },
         "validators": {
             "required": false
@@ -165,11 +159,11 @@ export const sampleData = [
     },
     {
         "name": "categories",
-        "label": "Checkbox Input",
+        "label": {en:"Checkbox Input", hi: "चेकबॉक्स इनपुट"},
         "value":"",
         "type": "checkbox",
         "errorMessage": {
-            "required": "Select a category"
+            "required": {en:"Select a category", hi: "एक श्रेणी चुनें"}
         },
         "validators": {
             "required": false
@@ -203,11 +197,11 @@ export const sampleData = [
     },
     {
         "name": "gender",
-        "label": "Radio Input",
+        "label": {en:"Radio Input", hi: "रेडियो इनपुट"},
         "value":"",
         "type": "radio",
         "errorMessage": {
-            "required": "Select a value"
+            "required": {en:"Select a value", hi: "एक मान चुनें"}
         },
         "validators": {
             "required": true
@@ -229,11 +223,11 @@ export const sampleData = [
     },
     {
         "name": "accept",
-        "label": "Terms and conditions",
+        "label": {en:"Terms and conditions", hi: "नियम और शर्तें"},
         "value": false,
         "type": "toggle",
         "errorMessage": {
-            "required": "You need to accept"
+            "required": {en:"You need to accept", hi: "आपको स्वीकार करना होगा"}
         },
         "validators": {
             "required": false

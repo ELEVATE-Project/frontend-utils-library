@@ -1,6 +1,6 @@
 
 <div style="margin: 25px;padding: 0px 30px;">
   <h3>Form Demo</h3>
-  <dynamic-form [formJson]="data" #formLib></dynamic-form>
+  <dynamic-form [formJson]="data" #formLib [language]="language"></dynamic-form>
   <button (click)="submitData()" [disabled]="this.formLib?.myForm?.invalid" mat-raised-button style="margin: 30px 0px;">SUBMIT</button>
 </div>

@@ -9,7 +9,8 @@ import { MainFormComponent } from 'dynamic-form';
 })
 export class AppComponent {
   data:any= []
-  @ViewChild('formLib') formLib: MainFormComponent | undefined
+  @ViewChild('formLib') formLib: MainFormComponent | undefined;
+  language:string ="en";
 
   constructor(){}
 

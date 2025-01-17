@@ -63,6 +63,7 @@ export interface DynamicFormData {
 export class MainFormComponent implements OnInit {
   @Input() formJson: any;
   @Input() classFlex: any ;
+  @Input() language: any;
   @Output() onChange = new EventEmitter<{ event: any, control: any }>();
   @Output() onFocus = new EventEmitter<string>();
 
