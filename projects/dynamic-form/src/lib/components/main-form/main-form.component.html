@@ -43,6 +43,8 @@
         [formControlName]="control?.name"
         [required]="control?.validators?.required"
         [compareWith]="compareWith"
+        (selectionChange)="onSelectChange($event, control)"
+      (focus)="onSelectFocus(control?.name)"
       >
         <mat-option *ngFor="let option of control?.options" [value]="option">
           {{ option.label }}
