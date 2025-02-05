@@ -186,9 +186,9 @@
 
     <mat-form-field *ngIf="control?.type == 'addResource'" floatLabel="always" class="no-bottom-line">
       <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
-      <div class="resource-button cursor-pointer" (click)="onClickAddResource(control)">
-        <mat-icon>{{control.icon}}</mat-icon>&nbsp;
-        <p>{{control?.textForLink}}</p>
+      <div class="resource-button">
+        <mat-icon (click)="onClickAddResource(control)"class="cursor-pointer inline-block">{{control.icon}}</mat-icon>&nbsp;
+        <p  (click)="onClickAddResource(control)" class="cursor-pointer inline-block">{{control?.textForLink}}</p>
       </div>
       <div class="flex flex-col gap-4">
         <div  *ngFor="let resource of resources;let i = index" class="resource-items-container">
@@ -210,16 +210,16 @@
 
     <mat-form-field class="example-full-width"  appearance="outline" floatLabel="always"  *ngIf="control?.type == 'date'">
       <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
-      <input matInput [placeholder]="control?.placeHolder" [readonly]="control.viewOnly ? control.viewOnly : viewOnly" (click)="picker.open()" [formControlName]="control?.name" readonly [matDatepicker]="picker" [min]="checkminDate(control)" [max]="checkmaxDate(control)"  (dateChange)="getAdjustedDate(control)">
+      <input matInput [placeholder]="control?.placeHolder" readonly (click)="picker.open()" [formControlName]="control?.name" readonly [matDatepicker]="picker" [min]="checkminDate(control)" [max]="checkmaxDate(control)"  (dateChange)="getAdjustedDate(control)">
       <mat-datepicker-toggle matIconSuffix [for]="picker" [disabled]="control.viewOnly ? control.viewOnly : viewOnly"></mat-datepicker-toggle>
       <mat-datepicker #picker [disabled]="control.viewOnly ? control.viewOnly : viewOnly"></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field *ngIf="control?.type == 'triggerParent'" floatLabel="always" class="no-bottom-line">
       <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
-      <div class="resource-button cursor-pointer">
-        <mat-icon (click)="navigateToParent(control)">{{control.icon}}</mat-icon>&nbsp;
-        <p (click)="navigateToParent(control)">{{control?.textForLink}}</p>
+      <div class="resource-button">
+        <mat-icon class=" cursor-pointer" (click)="navigateToParent(control)">{{control.icon}}</mat-icon>&nbsp;
+        <p class="cursor-pointer inline-block" (click)="navigateToParent(control)">{{control?.textForLink}}</p>
       </div>
       <div class="flex flex-col gap-4 mt-4">
         <div  *ngFor="let item of control.value;let i = index" class="resource-items-container">
