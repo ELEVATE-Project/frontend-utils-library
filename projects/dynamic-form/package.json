@@ -1,6 +1,6 @@
 {
   "name": "dynamic-form-suma",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "peerDependencies": {
     "@angular/common": "^17.3.4",
     "@angular/core": "^17.3.4",
