@@ -66,6 +66,7 @@ export class MainFormComponent implements OnInit {
   @Input() viewOnly: boolean = false;
   @Input() classFlex: any ;
   @Input() allowOpenLinks:boolean = false;
+  @Input() language: any
   myForm: FormGroup = this.fb.group({});
   resources:any = [];
   @ViewChild('subform') subform: MainFormComponent | undefined

@@ -1,0 +1,20 @@
+.header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .header-label {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  
+  .header-input {
+    width: 100%;
+    margin-top: 4px;
+  }
+
+
+  .mat-sort-header-arrow{
+    top:-35px !important
+  }

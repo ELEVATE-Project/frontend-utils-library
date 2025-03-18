@@ -10,6 +10,8 @@ import { MainFormComponent } from 'dynamic-form';
 export class AppComponent {
   data:any= []
   @ViewChild('formLib') formLib: MainFormComponent | undefined
+  language = "en"
+  message = { en:"Message in english", hi: "अपना नाम दर्ज करें" }
 
   constructor(){}
 

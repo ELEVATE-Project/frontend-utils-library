@@ -5,10 +5,10 @@
       *ngIf="control?.type === 'text' || control?.type === 'password'"
       floatLabel="always"
     >
-      <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
+      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <input
         matInput
-        [placeholder]="control?.placeHolder"
+        [placeholder]="control?.placeHolder | languageTranslate: language"
         [type]="control?.type"
         [formControlName]="control?.name"
         [maxlength]="control?.validators.maxLength"
@@ -55,11 +55,11 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" *ngIf="control?.type === 'textarea'" floatLabel="always" >
-      <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
+      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <textarea
         matInput
         [formControlName]="control?.name"
-        [placeholder]="control?.placeHolder"
+        [placeholder]="control?.placeHolder | languageTranslate: language"
         [maxlength]="control?.validators?.maxLength"
         [required]="control?.validators?.required"
         [value]="control?.value"
@@ -70,10 +70,11 @@
       </textarea>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" *ngIf="control?.type === 'select'" floatLabel="always">
-      <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
+    <mat-form-field  appearance="outline" *ngIf="control?.type === 'select'" floatLabel="always">
+      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <mat-select
-        [placeholder]="control?.placeHolder"
+        [value]="control?.value"
+        [placeholder]="control?.placeHolder | languageTranslate: language"
         [formControlName]="control?.name"
         [required]="control?.validators?.required"
         [compareWith]="compareWith"
@@ -86,7 +87,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" *ngIf="control?.type === 'chip'" floatLabel="always">
-      <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
+      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <lib-chip-input
         [chipControl]="control"
         [formControlName]="control?.name"
@@ -104,7 +105,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" *ngIf="control?.type === 'range'" floatLabel="always">
-      <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
+      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <mat-slider
         style="width: 100%"
         [min]="control?.min"
@@ -118,7 +119,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" *ngIf="control?.type === 'rating'" floatLabel="always">
-      <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
+      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <lib-star-rating
         [formControlName]="control.name"
         [label]="control.label"
@@ -128,7 +129,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" *ngIf="control?.type === 'checkbox'" floatLabel="always">
-      <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
+      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <input matInput [formControlName]="control?.name" hidden />
       <lib-checkbox-input
         [checkboxControl]="control"
@@ -137,7 +138,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" *ngIf="control?.type === 'radio'" floatLabel="always">
-      <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
+      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <input matInput [formControlName]="control?.name" hidden class="visibility-hidden" />
       <lib-radio-input
         [radioControl]="control"
@@ -146,7 +147,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline" *ngIf="control?.type == 'toggle'" floatLabel="always">
-      <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
+      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <mat-slide-toggle
         [formControlName]="control?.name"
         [checked]="control?.value"
@@ -166,7 +167,7 @@
 
     <div *ngIf="control?.type == 'subFields'" >
       <div>
-        <dynamic-form [formJson]="control.subfields" [viewOnly]="viewOnly" classFlex="flex-class" #subform (change)="addFields(control?.name, $event)" ></dynamic-form>
+        <dynamic-form [formJson]="control.subfields" classFlex="flex-class" #subform (change)="addFields(control?.name, $event)" [language]="language" ></dynamic-form>
       </div>
     </div>
 
@@ -185,7 +186,7 @@
     </mat-form-field> -->
 
     <mat-form-field *ngIf="control?.type == 'addResource'" floatLabel="always" class="no-bottom-line">
-      <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
+      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <div class="resource-button">
         <mat-icon (click)="onClickAddResource(control)"class="cursor-pointer inline-block">{{control.icon}}</mat-icon>&nbsp;
         <p  (click)="onClickAddResource(control)" class="cursor-pointer inline-block">{{control?.textForLink}}</p>
@@ -209,14 +210,14 @@
     </mat-form-field>
 
     <mat-form-field class="example-full-width"  appearance="outline" floatLabel="always"  *ngIf="control?.type == 'date'">
-      <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
+      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <input matInput [placeholder]="control?.placeHolder" readonly (click)="picker.open()" [formControlName]="control?.name" readonly [matDatepicker]="picker" [min]="checkminDate(control)" [max]="checkmaxDate(control)"  (dateChange)="getAdjustedDate(control)">
       <mat-datepicker-toggle matIconSuffix [for]="picker" [disabled]="control.viewOnly ? control.viewOnly : viewOnly"></mat-datepicker-toggle>
       <mat-datepicker #picker [disabled]="control.viewOnly ? control.viewOnly : viewOnly"></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field *ngIf="control?.type == 'triggerParent'" floatLabel="always" class="no-bottom-line">
-      <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
+      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <div class="resource-button">
         <mat-icon class=" cursor-pointer" (click)="navigateToParent(control)">{{control.icon}}</mat-icon>&nbsp;
         <p class="cursor-pointer inline-block" (click)="navigateToParent(control)">{{control?.textForLink}}</p>
@@ -248,34 +249,34 @@
       (mouseleave)="hideTooltip(i)">info
     </mat-icon>
 
-  <mat-error class="error-container" *ngIf="control?.errorMessage">
-    <div  *ngIf="
-    myForm.get(control?.name)?.touched &&
-    myForm.get(control?.name)?.invalid" >
-  <div
-  class="error-message"
-  *ngIf="
-    control?.errorMessage[
-      ((myForm.get(control.name)?.errors | keyvalue) || [])[0].key
-    ];
-    else genericErrorMessage
-  "
->
-  <mat-icon class="error-icon" matPrefix>error_outline</mat-icon>
-  {{
-    control?.errorMessage[
-      ((myForm.get(control.name)?.errors | keyvalue) || [])[0].key
-    ]
-  }}
-</div>
-<ng-template #genericErrorMessage>
-  <div class="error-message">
+    <mat-error class="error-container" *ngIf="control?.errorMessage">
+      <div  *ngIf="
+      myForm.get(control?.name)?.touched &&
+      myForm.get(control?.name)?.invalid" >
+    <div
+    class="error-message"
+    *ngIf="
+      control?.errorMessage[
+        ((myForm.get(control.name)?.errors | keyvalue) || [])[0].key
+      ];
+      else genericErrorMessage
+    "
+  >
     <mat-icon class="error-icon" matPrefix>error_outline</mat-icon>
-    Enter {{ control?.label }}
+    {{
+      control?.errorMessage[
+        ((myForm.get(control.name)?.errors | keyvalue) || [])[0].key
+      ] | languageTranslate: language
+    }}
   </div>
-</ng-template>
+  <ng-template #genericErrorMessage>
+    <div class="error-message">
+      <mat-icon class="error-icon" matPrefix>error_outline</mat-icon>
+      Enter {{ control?.label | languageTranslate: language }}
     </div>
-</mat-error>
+  </ng-template>
+      </div>
+  </mat-error>
 </div>
 </ng-container>
 </form>

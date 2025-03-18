@@ -23,6 +23,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTooltipModule, MatTooltip } from '@angular/material/tooltip';
 import { AddResourceComponent } from './components/add-resource/add-resource.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { LanguageTranslatePipe } from './pipes/language-translate.pipe';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     CheckboxInputComponent,
     StarRatingComponent,
     AddResourceComponent,
+    LanguageTranslatePipe
   ],
   imports: [
     CommonModule,
@@ -55,7 +57,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatTooltipModule,
     MatTooltip
   ],
-  exports: [MainFormComponent],
-  schemas:[NO_ERRORS_SCHEMA]
+  exports: [MainFormComponent, LanguageTranslatePipe],
+  schemas:[NO_ERRORS_SCHEMA],
+  providers:[LanguageTranslatePipe]
 })
 export class DynamicFormModule {}
