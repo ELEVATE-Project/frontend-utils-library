@@ -242,7 +242,7 @@
       class="info-icon enable-with-pointer-events"
       matTooltipClass="info-tooltip"
       matTooltipPosition="above"
-      [matTooltip]="control?.infoMessage"
+      [matTooltip]="control?.infoMessage | languageTranslate: language"
       [matTooltipDisabled]="true"
       #tooltip="matTooltip"
       (click)="showTooltip(i)"
