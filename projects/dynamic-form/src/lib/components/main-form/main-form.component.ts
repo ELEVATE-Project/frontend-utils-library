@@ -192,7 +192,8 @@ constructor(private fb: FormBuilder,public dialog: MatDialog,  private eRef: Ele
     let dialog = this.dialog.open(AddResourceComponent, {
       disableClose: true,
       data: {
-        control:control.dialogData
+        control:control.dialogData,
+        language:this.language
       }
 
     });

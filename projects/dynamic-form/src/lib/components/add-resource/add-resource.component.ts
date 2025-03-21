@@ -12,6 +12,7 @@ export class AddResourceComponent {
   myGroup: FormGroup;
   @Output() saveLearningResource = new EventEmitter<any>();
   values:any = []
+  language:any
 
   constructor(public dialogRef: MatDialogRef<AddResourceComponent>, @Inject(MAT_DIALOG_DATA) public dialogData: any) {
     this.myGroup = new FormGroup({
@@ -19,6 +20,7 @@ export class AddResourceComponent {
     });
     // Optionally, initialize with one resource
     this.addResource();
+    this.language = this.dialogData.language
    }
 
    get resources() {

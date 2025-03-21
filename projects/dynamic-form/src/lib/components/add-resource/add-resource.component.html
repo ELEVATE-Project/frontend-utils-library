@@ -1,7 +1,7 @@
 <form [formGroup]="myGroup" class="dialog-container">
   <header>
     <div class="header">
-      <h3 class="text-white">{{dialogData.control.header}}</h3>
+      <h3 class="text-white">{{dialogData.control.header | languageTranslate: language}}</h3>
       <mat-icon class="cursor-pointer text-white" [mat-dialog-close]="false">close</mat-icon>
     </div>
   </header>
@@ -9,10 +9,10 @@
     <div *ngFor="let resourceGroup of resources.controls; let i = index" [formGroupName]="i" class="form-container">
       <div *ngFor="let control of dialogData.control.resource[i]" class="w-[45%]">
         <mat-form-field floatLabel="always" class="w-full" appearance="outline">
-          <mat-label *ngIf="control.label">{{ control?.label }}</mat-label>
+          <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
           <input
             matInput
-            [placeholder]="control?.placeHolder"
+            [placeholder]="control?.placeHolder | languageTranslate: language"
             [type]="control?.type"
             [formControlName]="control?.name"
             [maxlength]="control?.validators.maxLength"
@@ -25,12 +25,12 @@
           <div *ngIf="resourceGroup.get(control.name)?.touched && resourceGroup.get(control.name)?.invalid">
             <div class="error-message" *ngIf="control?.errorMessage[((resourceGroup.get(control.name)?.errors | keyvalue) || [])[0].key ]; else genericErrorMessage ">
               <mat-icon class="error-icon" matPrefix>error_outline</mat-icon>
-              {{ control?.errorMessage[ ((resourceGroup.get(control.name)?.errors | keyvalue) || [])[0].key ] }}
+              {{ control?.errorMessage[ ((resourceGroup.get(control.name)?.errors | keyvalue) || [])[0].key ] | languageTranslate: language}}
             </div>
             <ng-template #genericErrorMessage>
               <div class="error-message">
                 <mat-icon class="error-icon" matPrefix>error_outline</mat-icon>
-                Enter {{ control?.label }}
+                Enter {{ control?.label}}
               </div>
             </ng-template>
           </div>
@@ -40,13 +40,13 @@
     <div  class="button-container">
         <button (click)="onClickAddResource()" [disabled]="myGroup.invalid" mat-raised-button>
           <mat-icon class="cursor-pointer">add_circle</mat-icon>
-          <p> {{dialogData.control?.addButton}}</p>
+          <p> {{dialogData.control?.addButton | languageTranslate: language}}</p>
         </button>
     </div>
   </main>
   <hr>
   <section class="footer">
-    <button mat-raised-button [mat-dialog-close]="false" class="cancel-btn">{{dialogData.control.cancelButton}}</button>
-    <button [disabled]="myGroup.invalid" color="primary" mat-raised-button [mat-dialog-close]="true" cdkFocusInitial (click)="confirmButton()">{{dialogData.control.confirmButton}}</button>
+    <button mat-raised-button [mat-dialog-close]="false" class="cancel-btn">{{dialogData.control.cancelButton | languageTranslate: language}}</button>
+    <button [disabled]="myGroup.invalid" color="primary" mat-raised-button [mat-dialog-close]="true" cdkFocusInitial (click)="confirmButton()">{{dialogData.control.confirmButton | languageTranslate: language}}</button>
   </section>
 </form>
