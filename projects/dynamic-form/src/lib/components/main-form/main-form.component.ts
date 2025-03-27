@@ -231,8 +231,8 @@ constructor(private fb: FormBuilder,public dialog: MatDialog,  private eRef: Ele
     for (let key in this.myForm.value) {
       this.myForm.value[key]= this.myForm.value[key].value ? this.myForm.value[key].value : this.myForm.value[key]
     }
-    this.controlChange.emit( event.target?.id ? event.target?.id : event)
     this.formChange.emit(this.myForm.value);
+    this.controlChange.emit( event?.target?.id ? event.target?.id : event)
   }
 
   showTooltip(index: number) {
