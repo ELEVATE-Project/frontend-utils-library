@@ -11,6 +11,7 @@ export class ChartComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  // Testing data
   public data = {
     labels: [
       "January", "February", "March", "April", "May", 
