@@ -1,0 +1,101 @@
+<div *ngIf="!dataSource?.data?.length && (!hasFiltersData())"  class="no-data-row">
+  <h1>{{metaKeys?.noSessions}}</h1>
+</div>
+<div class="mat-elevation-z8"  *ngIf="dataSource?.data?.length || hasFiltersData()" >
+  <div class="table-container" [ngClass]="{'isMobileTableContainer': isMobile()}">
+    <div class="header">
+      <div class="title" [ngClass]="{'isMobileTitle': isMobile()}">{{title}}</div>
+      <div>
+        <button mat-raised-button color="primary" *ngIf="hasFiltersData() || sortColumn" (click)="clearFilters()" style="background-color: #832215; color: #fff; margin: 2px;" >{{metaKeys?.clearFilters}}</button>
+        <button mat-raised-button color="primary" (click)="openPopup()" style="background-color: #832215; color: #fff; margin: 2px;" >{{metaKeys?.downloadTable}}</button>
+      </div>
+    </div>
+   <div style="overflow: auto; max-height: 65vh;">
+    <table mat-table [dataSource]="dataSource" class="full-width-table">
+      <ng-container *ngFor="let column of displayedColumns; let i = index" [matColumnDef]="column">
+        <th class="mat-header-cell" *matHeaderCellDef style="border-bottom: 1px solid #ccc;">
+          <div class="header-container">
+            <div class="header-label" [ngClass]="{'isMobileHeaderLabel': isMobile()}">{{ getHeaderLabel(column) }}  <mat-icon class="material-symbols-outlined" style="cursor: pointer;" (click)="onSort(column)">
+              swap_vert
+            </mat-icon></div>
+            <mat-form-field appearance="outline"  *ngIf="isSearchable(column)">
+              <mat-label>{{metaKeys?.search}}</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="Search"
+                (click)="$event.stopPropagation()"
+                (input)="onSearch($event, column)"
+                [(ngModel)]="searchValues[column]"
+              />
+              <mat-icon matPrefix>search</mat-icon>
+            </mat-form-field>
+            <mat-error *ngIf="activeSearchColumn === column && !isValidSearch">{{metaKeys?.invalidSearch}}</mat-error>
+            <mat-form-field appearance="outline" *ngIf="isFilterable(column)">
+              <mat-select [(ngModel)]="filterValues[column]" (selectionChange)="onFilter($event, column)" [multiple]="checkMultiple(column)" placeholder="{{metaKeys?.select}}" style="padding: unset !important;" [compareWith]="compareWithArray">
+                <mat-option *ngFor="let option of options" [value]="option.value">
+                  {{ option.label }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" *ngIf="isDatePicker(column)">
+              <mat-label>{{metaKeys?.selectDate}}</mat-label>
+              <input
+                matInput
+                [matDatepicker]="startPicker"
+                (click)="startPicker.open()"
+                (dateChange)="onDate($event, column)"
+                placeholder="Choose a date"
+                [(ngModel)]="dateFilters[column]"
+              />
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element" [class.fixed-column]="i === 0" matTooltip="{{ element[column] }}">
+          <div class="ellipsis" [ngClass]="{'isMobileEllipsis': isMobile()}">{{ element[column] }}</div>
+        </td>
+        <div [class.fixed-column]="i !== 0" style="overflow: auto;">
+          <td mat-cell *matCellDef="let element">
+            <div class="cell-content">{{ element[column] }}</div>
+          </td>
+        </div>
+      </ng-container>
+     
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+   </div>
+   <div *ngIf="!dataSource?.data?.length" class="no-data-row">
+    <div style="text-align: center; padding: 20px;">
+      {{metaKeys?.noData}}
+    </div>
+  </div>
+   <mat-paginator [length]="tableDataCount" [pageSizeOptions]="pageSizeOptions" [defaultPageSize]="pageSize" showFirstLastButtons  (page)="onPageChange($event)"></mat-paginator>
+  </div>
+
+  <div class="overlay" *ngIf="showPopup"></div>
+  <mat-dialog-content *ngIf="showPopup" class="centered-popup">
+    <h2>{{metaKeys?.selectDateRange}}</h2>
+    <mat-form-field appearance="outline">
+      <mat-label>{{metaKeys?.startDate}}</mat-label>
+      <input matInput [matDatepicker]="startPicker" [(ngModel)]="startDate" (ngModelChange)="validateDates(); formatDate(startDate)"
+      >
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field  appearance="outline">
+      <mat-label>{{metaKeys?.endDate}}</mat-label>
+      <input matInput [matDatepicker]="endPicker" [(ngModel)]="endDate" (ngModelChange)="validateDates(); formatDate(endDate)">
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker></mat-datepicker>
+    </mat-form-field>
+    <div *ngIf="dateError" class="error">{{metaKeys?.reportDateError}}</div>
+    <div *ngIf="noData" class="error">{{metaKeys?.reportTableNoSessions}}</div>
+    <div class="actions">
+      <button mat-button (click)="closePopup()">{{metaKeys?.cancel}}</button>
+      <button mat-button style="background-color:var(--ion-color-primary); color: #fff;" (click)="submitDates()" [disabled]="dateError">{{metaKeys?.submit}}</button>
+    </div>
+  </mat-dialog-content>
+</div>

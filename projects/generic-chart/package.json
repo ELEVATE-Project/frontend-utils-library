@@ -1,0 +1,17 @@
+{
+  "name": "generic-chart",
+  "version": "1.0.4",
+   "author" :"Vishwanath",
+  "peerDependencies": {
+    "@angular/common": "^13.2.0",
+    "@angular/core": "^13.2.0",
+    "moment": "^2.30.1"
+  },
+  "repository":{
+    "type":"git",
+    "link":"https://github.com/vishwanath1004/frontend-utils-library"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}
