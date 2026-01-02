@@ -6,8 +6,8 @@
     <div class="header">
       <div class="title" [ngClass]="{'isMobileTitle': isMobile()}">{{title}}</div>
       <div>
-        <button mat-raised-button color="primary" *ngIf="hasFiltersData() || sortColumn" (click)="clearFilters()" style="background-color: #832215; color: #fff; margin: 2px;" >{{metaKeys?.clearFilters}}</button>
-        <button mat-raised-button color="primary" (click)="openPopup()" style="background-color: #832215; color: #fff; margin: 2px;" >{{metaKeys?.downloadTable}}</button>
+        <button mat-raised-button color="primary" *ngIf="hasFiltersData() || sortColumn" (click)="clearFilters()" class="x-button" >{{metaKeys?.clearFilters}}</button>
+        <button mat-raised-button color="primary" (click)="openPopup()" class="x-button">{{metaKeys?.downloadTable}}</button>
       </div>
     </div>
    <div style="overflow: auto; max-height: 65vh;">
@@ -15,7 +15,7 @@
       <ng-container *ngFor="let column of displayedColumns; let i = index" [matColumnDef]="column">
         <th class="mat-header-cell" *matHeaderCellDef style="border-bottom: 1px solid #ccc;">
           <div class="header-container">
-            <div class="header-label" [ngClass]="{'isMobileHeaderLabel': isMobile()}">{{ getHeaderLabel(column) }}  <mat-icon class="material-symbols-outlined" style="cursor: pointer;" (click)="onSort(column)">
+            <div class="header-label" [ngClass]="{'isMobileHeaderLabel': isMobile()}">{{ getHeaderLabel(column) }}  <mat-icon  class="material-symbols-outlined" style="cursor: pointer; overflow: unset;" (click)="onSort(column)">
               swap_vert
             </mat-icon></div>
             <mat-form-field appearance="outline"  *ngIf="isSearchable(column)">
@@ -95,7 +95,7 @@
     <div *ngIf="noData" class="error">{{metaKeys?.reportTableNoSessions}}</div>
     <div class="actions">
       <button mat-button (click)="closePopup()">{{metaKeys?.cancel}}</button>
-      <button mat-button style="background-color:var(--ion-color-primary); color: #fff;" (click)="submitDates()" [disabled]="dateError">{{metaKeys?.submit}}</button>
+      <button mat-button [ngStyle]="{'background-color': (!startDate || !endDate) ? '#898989' : 'var(--ion-color-primary)'}" style="background-color:var(--ion-color-primary); color: #fff;" (click)="submitDates()" [disabled]="dateError || (!startDate || !endDate)">{{metaKeys?.submit}}</button>
     </div>
   </mat-dialog-content>
 </div>

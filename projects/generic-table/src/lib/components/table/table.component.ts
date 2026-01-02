@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { paginatorConstants } from '../../constants/paginatorConstats';
+import moment from 'moment';
 
 @Component({
   selector: 'lib-table',
@@ -141,7 +142,8 @@ export class TableComponent implements OnInit, AfterViewInit {
   initializeTable(): void {
     this.dataSource.data = this.data;
     if(this.data?.length){
-      this.displayedColumns = Object.keys(this.data[0]);
+      const keys = this.columns.map((item: any) => item.key);
+    this.displayedColumns = keys;
     }
   }
   getHeaderLabel(columnKey: string): string {
@@ -216,7 +218,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
   isFilterable(columnKey: any) {
     const column = this.columns.find((col: any) => col.key === columnKey);
-    if(column.dataType !== "Date"){
+    if(column && column?.dataType !== "Date"){
       this.options = column.filters = this.filteredObjects[column.key];
       return column?.filter
     }
@@ -227,7 +229,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   isDatePicker(columnKey: any) {
-    const column = this.columns.find((col: any) => col.key === columnKey && col.dataType === 'Date');
+    const column = this.columns.find((col: any) => col.key === columnKey && col?.dataType === 'Date');
     return column?.filter
   }
   openPopup() {
@@ -236,6 +238,10 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   closePopup() {
     this.showPopup = false;
+    this.startDate = "";
+    this.endDate = "";
+    this.dateError =false;
+    this.noData = false;
   }
 
   validateDates() {
@@ -253,30 +259,39 @@ export class TableComponent implements OnInit, AfterViewInit {
       this.downloadCSV(startDateEpoch,endDateEpoch);
     }
   }
-
-  downloadCSV(startDate :any, endDate:any){
+   downloadCSV(startDate :any, endDate:any){
     this.url =  this.url.replace(/start_date=[^&]*/, `start_date=${startDate}`);
     this.url =  this.url.replace(/end_date=[^&]*/, `end_date=${endDate}`);
     this.url =  this.url.replace(/download_csv=[^&]*/, `download_csv=true`);
-    this.apiService.post({url :  this.url,body:this.body, headers: this.headers}).then((data:any)=>{  
+    this.apiService.post({url :  this.url,body:this.body, headers: this.headers}).then(async (data:any)=>{  
       if(data.result && data.result.reportsDownloadUrl){
         this.noData = false;
-        const timestamp: number = new Date().getTime();
+        const timestamp: string = moment().format('DD-MM-YYYY_HH-mm-ss');
           if(this.isMobile()){
-            console.log("266");
             let downloadData = {
               url :data.result.reportsDownloadUrl,
-              fileName: `${this.title}${timestamp}`
+              fileName: `${this.title}_${timestamp}`
             }
             this.downloadEvent.emit(downloadData);
           }else{
+        try {
+          const fileName = `${this.title}_${timestamp}.csv`;
+          
+          const response = await fetch(data.result.reportsDownloadUrl);
+          const blob = await response.blob();
+          
           const link = document.createElement('a');
-          link.href = data.result.reportsDownloadUrl;
-          link.download = `${this.title}${timestamp}.csv`; 
+          link.href = URL.createObjectURL(blob);
+          link.download = fileName;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
+          URL.revokeObjectURL(link.href);
+        } catch (error) {
+          console.error('Error downloading report:', error);
+        }
       }
+
       this.closePopup();
       }else{
         this.noData = true;

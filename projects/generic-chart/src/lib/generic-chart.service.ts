@@ -41,7 +41,7 @@ export class GenericChartService {
       });
   }
 
-  transformApiResponse(response: any[], legends: any): any {
+  transformApiResponse(response: any[], legends: any, showMonthName: boolean): any {
     const labels: string[] = [];
     let dataset: any = [];
     response.forEach(item => {
@@ -49,31 +49,29 @@ export class GenericChartService {
       const endDateEpoch = Number(item.enddate);
       const startDate :any = startDateEpoch ? new Date(startDateEpoch) : null;
       const endDate :any = endDateEpoch ? new Date(endDateEpoch) : null;
-      const formattedStartDate = startDate
-        ? moment.unix(startDate).format('DD/MM/YY')
-        : 'Invalid Date';
-      const formattedEndDate = endDate
-        ? moment.unix(endDate).format('DD/MM/YY')
-        : 'Invalid Date';
+      const formattedStartDate = showMonthName ? startDate
+      ? moment.unix(startDate).format('MMMM') 
+      : 'Invalid Date' : moment.unix(startDate).format('DD/MM/YY');
+      const formattedEndDate = showMonthName ? endDate
+      ? moment.unix(endDate).format('MMMM')
+      : 'Invalid Date' : moment.unix(endDate).format('DD/MM/YY');
       labels.push(formattedStartDate);
       for (const legend of legends) {
-        const key: any = Object.keys(legend)[0];
-        const label = legend[key];
-        let existingDataset = dataset.find((ds:any) => ds.label === label);
-        if (item[key] && !isNaN(item[key])) {
-          const value = Number(item[key]);
-          if (value !== 0) {
-            if (existingDataset) {
-              existingDataset?.data.push(value);
-            } else {
-              dataset.push({
-                label: label,
-                data: [value],
-                barPercentage: 1,
-                maxBarThickness: 50,
-                backgroundColor: legend.backgroundColor || this.getRandomColor(),
-              });
-            }
+      const key: any = Object.keys(legend)[0];
+      const label = legend[key];
+      let existingDataset = dataset.find((ds:any) => ds.label === label);
+      if (item[key] && !isNaN(item[key])) {
+        const value = Number(item[key]);
+        if (existingDataset) {
+        existingDataset?.data.push(value);
+        } else {
+        dataset.push({
+          label: label,
+          data: [value],
+          barPercentage: 1,
+          maxBarThickness: 50,
+          backgroundColor: legend.backgroundColor || this.getRandomColor(),
+        });
         }
       }
       }

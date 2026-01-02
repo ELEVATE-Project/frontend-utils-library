@@ -1,6 +1,6 @@
 {
   "name": "generic-chart",
-  "version": "1.0.4",
+  "version": "1.2.26",
    "author" :"Vishwanath",
   "peerDependencies": {
     "@angular/common": "^13.2.0",

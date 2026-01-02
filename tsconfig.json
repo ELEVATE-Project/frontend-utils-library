@@ -1,17 +1,33 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": false,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitOverride": true,
     "paths": {
-      "dynamic-form": [
-        "dist/dynamic-form"
+      "generic-chart": [
+        "dist/generic-chart/generic-chart",
+        "dist/generic-chart"
+      ],
+      "generic-table": [
+        "dist/generic-table/generic-table",
+        "dist/generic-table"
+      ],
+      "table": [
+        "dist/table/table",
+        "dist/table"
+      ],
+      "tables": [
+        "dist/tables/tables",
+        "dist/tables"
       ]
     },
-    "strict": true,
-    "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
@@ -21,13 +37,12 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ES2022",
+    "target": "es2017",
     "module": "es2020",
     "lib": [
       "es2020",
       "dom"
-    ],
-    "useDefineForClassFields": false
+    ]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
