@@ -284,22 +284,50 @@ constructor(private fb: FormBuilder,public dialog: MatDialog,  private eRef: Ele
     this.onActionTriggerParent.emit(control);
   }
 
-  checkminDate(control: any) {
-    if (control.minDependentChild) {
-      const dependentControl = this.myForm.get(control.minDependentChild);
-      return dependentControl ? dependentControl.value : null;
-    }
+checkminDate(control: any) {
+  // No restriction in view mode
+  if (this.viewOnly || control.viewOnly) {
     return null;
   }
-  
-  checkmaxDate(control: any) {
-    if (control.maxDependentChild) {
-      const dependentControl = this.myForm.get(control.maxDependentChild);
-      return dependentControl ? dependentControl.value : null;
+  // If End Date (has minDependentChild = startDate)
+  if (control.minDependentChild) {
+    const dependent = this.myForm.get(control.minDependentChild)?.value;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (dependent) {
+      const startDate = new Date(dependent);
+      startDate.setHours(0, 0, 0, 0);
+
+      // End Date must be greater than both startDate and today
+      return startDate > today ? startDate : today;
     }
+
+    // If no startDate selected yet, just use today
+    return today;
+  }
+
+  // For Start Date, no min restriction
+  return null;
+}
+
+checkmaxDate(control: any) {
+  // No restriction in view mode
+  if (this.viewOnly || control.viewOnly) {
     return null;
   }
 
+  // If Start Date (has maxDependentChild = endDate)
+  if (control.maxDependentChild) {
+    const dependent = this.myForm.get(control.maxDependentChild)?.value;
+
+    if (dependent) {
+      return new Date(dependent); // Start Date must be less than End Date
+    }
+  }
+  // Otherwise, no max restriction
+  return null;
+}
 
   getAdjustedDate(control:any): any {
     let rawDate = this.myForm.get(control.name)
