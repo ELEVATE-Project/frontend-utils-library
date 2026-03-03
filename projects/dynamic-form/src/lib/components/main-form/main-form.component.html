@@ -1,6 +1,7 @@
-<form [formGroup]="myForm" [class]="classFlex">
-  <div *ngFor="let control of formJson" class="w-full">
-    <mat-form-field
+<form [formGroup]="myForm" [class]="classFlex" (focusout)="handleFocusOut($event)" [ngClass]="{'disabled-with-pointer-events': viewOnly}">
+  <ng-container *ngFor="let control of formJson; let i = index" >
+    <div [class]="control.cssStyle" style="position: relative;" [ngClass]="{'disabled-with-pointer-events': control.viewOnly}">
+    <mat-form-field appearance="outline"
       *ngIf="control?.type === 'text' || control?.type === 'password'"
       floatLabel="always"
     >
@@ -12,6 +13,10 @@
         [formControlName]="control?.name"
         [maxlength]="control?.validators.maxLength"
         [required]="control?.validators?.required"
+        [value]="control?.value"
+        [(ngModel)]="control.value"
+        [readonly]="control.viewOnly ? control.viewOnly : viewOnly"
+        [id]="control?.name"
       />
       <mat-icon
         matSuffix
@@ -20,10 +25,36 @@
         style="cursor: pointer"
       >
         {{ control?.type === "password" ? "visibility_off" : "visibility" }}
-      </mat-icon>        
+      </mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline"
+      *ngIf="control?.type === 'number'"
+      floatLabel="always"
+    >
+      <mat-label *ngIf="control.label">{{ control?.label  | languageTranslate: language }}</mat-label>
+      <input
+        matInput
+        [placeholder]="control?.placeHolder | languageTranslate: language"
+        [type]="control?.type"
+        [formControlName]="control?.name"
+        [min]="control?.validators.min"
+        [max]="control?.validators.max"
+        [required]="control?.validators?.required"
+        [value]="control?.value"
+        [(ngModel)]="control.value"
+        [readonly]="control.viewOnly ? control.viewOnly : viewOnly"
+      />
+      <mat-icon
+        matSuffix
+        *ngIf="control?.type === 'password' || control?.showPasswordIcon"
+        (click)="togglePasswordVisibility(control)"
+        style="cursor: pointer"
+      >
+        {{ control?.type === "password" ? "visibility_off" : "visibility" }}
+      </mat-icon>
     </mat-form-field>
 
-    <mat-form-field *ngIf="control?.type === 'textarea'" floatLabel="always" >
+    <mat-form-field appearance="outline" *ngIf="control?.type === 'textarea'" floatLabel="always" >
       <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <textarea
         matInput
@@ -31,11 +62,15 @@
         [placeholder]="control?.placeHolder | languageTranslate: language"
         [maxlength]="control?.validators?.maxLength"
         [required]="control?.validators?.required"
+        [value]="control?.value"
+        [(ngModel)]="control.value"
+        [readonly]="control.viewOnly ? control.viewOnly : viewOnly"
+        [id]="control?.name"
       >
       </textarea>
     </mat-form-field>
 
-    <mat-form-field *ngIf="control?.type === 'select'" floatLabel="always">
+    <mat-form-field  appearance="outline" *ngIf="control?.type === 'select'" floatLabel="always">
       <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <mat-select
         [value]="control?.value"
@@ -43,28 +78,33 @@
         [formControlName]="control?.name"
         [required]="control?.validators?.required"
         [compareWith]="compareWith"
+        [multiple]="control.isMultiSelect"
       >
-        <mat-option *ngFor="let option of control?.options" [value]="option">
+        <mat-option *ngFor="let option of control?.options" [value]="option" [selected]="control.value == option.value">
           {{ option.label }}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field *ngIf="control?.type === 'chip'" floatLabel="always">
+    <mat-form-field appearance="outline" *ngIf="control?.type === 'chip'" floatLabel="always">
       <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <lib-chip-input
         [chipControl]="control"
         [formControlName]="control?.name"
+        [viewOnly]="viewOnly"
+        [id]="control?.name"
       ></lib-chip-input>
       <textarea
         matInput
         [formControlName]="control?.name"
         hidden
+        class="visibility-hidden"
+        [id]="control?.name"
         [required]="control?.validators?.required"
       ></textarea>
     </mat-form-field>
 
-    <mat-form-field *ngIf="control?.type === 'range'" floatLabel="always">
+    <mat-form-field appearance="outline" *ngIf="control?.type === 'range'" floatLabel="always">
       <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <mat-slider
         style="width: 100%"
@@ -78,7 +118,7 @@
       <textarea matInput [formControlName]="control?.name" hidden></textarea>
     </mat-form-field>
 
-    <mat-form-field *ngIf="control?.type === 'rating'" floatLabel="always">
+    <mat-form-field appearance="outline" *ngIf="control?.type === 'rating'" floatLabel="always">
       <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <lib-star-rating
         [formControlName]="control.name"
@@ -88,7 +128,7 @@
       <textarea matInput [formControlName]="control?.name" hidden></textarea>
     </mat-form-field>
 
-    <mat-form-field *ngIf="control?.type === 'checkbox'" floatLabel="always">
+    <mat-form-field appearance="outline" *ngIf="control?.type === 'checkbox'" floatLabel="always">
       <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <input matInput [formControlName]="control?.name" hidden />
       <lib-checkbox-input
@@ -97,25 +137,27 @@
       ></lib-checkbox-input>
     </mat-form-field>
 
-    <mat-form-field *ngIf="control?.type === 'radio'" floatLabel="always">
+    <mat-form-field appearance="outline" *ngIf="control?.type === 'radio'" floatLabel="always">
       <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
-      <input matInput [formControlName]="control?.name" hidden />
+      <input matInput [formControlName]="control?.name" hidden class="visibility-hidden" />
       <lib-radio-input
         [radioControl]="control"
         [formControlName]="control?.name"
       ></lib-radio-input>
     </mat-form-field>
 
-    <mat-form-field *ngIf="control?.type == 'toggle'" floatLabel="always">
+    <mat-form-field appearance="outline" *ngIf="control?.type == 'toggle'" floatLabel="always">
       <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
       <mat-slide-toggle
         [formControlName]="control?.name"
         [checked]="control?.value"
         [required]="control?.validators?.required"
         color="primary"
+        (change)="togglefield($event)"
       >
       </mat-slide-toggle>
       <textarea
+        class="visibility-hidden"
         matInput
         [formControlName]="control?.name"
         hidden
@@ -123,29 +165,38 @@
       ></textarea>
     </mat-form-field>
 
-    <mat-form-field *ngIf="control?.type == 'subFields'" floatLabel="always">
-      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
+    <div *ngIf="control?.type == 'subFields'" >
       <div>
         <dynamic-form [formJson]="control.subfields" classFlex="flex-class" #subform (change)="addFields(control?.name, $event)" [language]="language" ></dynamic-form>
       </div>
-      <textarea
+    </div>
+
+    <!-- <mat-form-field appearance="outline" *ngIf="control?.type == 'subFields'" floatLabel="always" hidden>
+      <mat-label *ngIf="control.label">{{ control?.label }}</mat-label> -->
+      <!-- <div> -->
+        <!-- <dynamic-form [formJson]="control.subfields" classFlex="flex-class" #subform (change)="addFields(control?.name, $event)" ></dynamic-form> -->
+      <!-- </div> -->
+      <!-- <textarea
         matInput
         [formControlName]="control?.name"
         hidden
+        style="visibility: hidden;"
         [required]="control?.validators?.required || this.subform?.myForm?.invalid"
       ></textarea>
-    </mat-form-field>
+    </mat-form-field> -->
 
-    <mat-form-field *ngIf="control?.type == 'addResource'" floatLabel="always" appearance="fill" class="no-bottom-line">
+    <mat-form-field *ngIf="control?.type == 'addResource'" floatLabel="always" class="no-bottom-line">
       <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
-      <div class="flex cursor-pointer flex-class" (click)="onClickAddResource(control)">
-        <mat-icon>{{control.icon}}</mat-icon>
-        <p>{{control?.textForLink}}</p>
+      <div class="resource-button">
+        <mat-icon (click)="onClickAddResource(control)"class="cursor-pointer inline-block">{{control.icon}}</mat-icon>&nbsp;
+        <p  (click)="onClickAddResource(control)" class="cursor-pointer inline-block">{{control?.textForLink | languageTranslate: language}}</p>
       </div>
       <div class="flex flex-col gap-4">
-        <div  *ngFor="let resource of this.resources;let i = index" class="flex gap-4 bg-gray-200">
-          <mat-icon>{{control.listIcon}}</mat-icon>
-          <p>{{control.listLabel}}</p>
+        <div  *ngFor="let resource of resources;let i = index" class="resource-items-container">
+          <section class="resouce-inner-section cursor-pointer">
+            <img src="assets/images/video-icon.png" alt="My Image" (click)="openResourceLink(resource.url)">&nbsp;
+            <p>{{resource.name}}</p>
+          </section>
           <mat-icon (click)="deleteResource(i,control?.name)" class="cursor-pointer">close</mat-icon>
         </div>
       </div>
@@ -154,37 +205,78 @@
         [formControlName]="control?.name"
         hidden
         [required]="control?.validators?.required"
+        [readonly]="control.viewOnly ? control.viewOnly : viewOnly"
       ></textarea>
     </mat-form-field>
 
-    <mat-error
-      *ngIf="
-        myForm.get(control?.name)?.touched &&
-        myForm.get(control?.name)?.invalid
-      "
-    >
-      <div
-        class="error-message"
-        *ngIf="
-          control?.errorMessage[
-            ((myForm.get(control.name)?.errors | keyvalue) || [])[0].key
-          ];
-          else genericErrorMessage
-        "
-      >
-        <mat-icon class="error-icon" matPrefix>error_outline</mat-icon>
-        {{
-          control?.errorMessage[
-            ((myForm.get(control.name)?.errors | keyvalue) || [])[0].key
-          ] | languageTranslate: language
-        }}
+    <mat-form-field class="example-full-width"  appearance="outline" floatLabel="always"  *ngIf="control?.type == 'date'">
+      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
+      <input matInput [placeholder]="control?.placeHolder | languageTranslate: language" readonly (click)="picker.open()" [formControlName]="control?.name" readonly [matDatepicker]="picker" [min]="checkminDate(control)" [max]="checkmaxDate(control)"  (dateChange)="getAdjustedDate(control)">
+      <mat-datepicker-toggle matIconSuffix [for]="picker" [disabled]="control.viewOnly ? control.viewOnly : viewOnly"></mat-datepicker-toggle>
+      <mat-datepicker #picker [disabled]="control.viewOnly ? control.viewOnly : viewOnly"></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="control?.type == 'triggerParent'" floatLabel="always" class="no-bottom-line">
+      <mat-label *ngIf="control.label">{{ control?.label | languageTranslate: language }}</mat-label>
+      <div class="resource-button">
+        <mat-icon class=" cursor-pointer" (click)="navigateToParent(control)">{{control.icon}}</mat-icon>&nbsp;
+        <p class="cursor-pointer inline-block" (click)="navigateToParent(control)">{{control?.textForLink | languageTranslate: language}}</p>
       </div>
-      <ng-template #genericErrorMessage>
-        <div class="error-message">
-          <mat-icon class="error-icon" matPrefix>error_outline</mat-icon>
-          Enter {{ control?.label | languageTranslate: language }}
+      <div class="flex flex-col gap-4 mt-4">
+        <div  *ngFor="let item of control.value;let i = index" class="resource-items-container">
+          <section class="resouce-inner-section cursor-pointer" (click)="OnActionTriggerParent('VIEW',i, item)">
+            <img src="assets/images/video-icon.png" alt="My Image">&nbsp;
+            <p>{{item.label}}</p>
+          </section>
+          <div class="cursor-pointer flex flex-row gap-2">
+            <mat-icon (click)="OnActionTriggerParent('EDIT',i,item)" class="cursor-pointer">edit_square</mat-icon>
+            <mat-icon (click)="OnActionTriggerParent('DELETE',i,item)" class="cursor-pointer">close</mat-icon>
+          </div>
         </div>
-      </ng-template>
-    </mat-error>
+      </div>
+      <input matInput [formControlName]="control?.name" hidden class="visibility-hidden"  [required]="control?.validators?.required"/>
+    </mat-form-field>
+
+    <mat-icon
+      *ngIf="control?.infoMessage"
+      class="info-icon enable-with-pointer-events"
+      matTooltipClass="info-tooltip"
+      matTooltipPosition="above"
+      [matTooltip]="control?.infoMessage | languageTranslate: language"
+      [matTooltipDisabled]="true"
+      #tooltip="matTooltip"
+      (click)="showTooltip(i)"
+      (mouseleave)="hideTooltip(i)">info
+    </mat-icon>
+
+    <mat-error class="error-container" *ngIf="control?.errorMessage">
+      <div  *ngIf="
+      myForm.get(control?.name)?.touched &&
+      myForm.get(control?.name)?.invalid" >
+    <div
+    class="error-message"
+    *ngIf="
+      control?.errorMessage[
+        ((myForm.get(control.name)?.errors | keyvalue) || [])[0].key
+      ];
+      else genericErrorMessage
+    "
+  >
+    <mat-icon class="error-icon" matPrefix>error_outline</mat-icon>
+    {{
+      control?.errorMessage[
+        ((myForm.get(control.name)?.errors | keyvalue) || [])[0].key
+      ] | languageTranslate: language
+    }}
   </div>
+  <ng-template #genericErrorMessage>
+    <div class="error-message">
+      <mat-icon class="error-icon" matPrefix>error_outline</mat-icon>
+      Enter {{ control?.label | languageTranslate: language }}
+    </div>
+  </ng-template>
+      </div>
+  </mat-error>
+</div>
+</ng-container>
 </form>

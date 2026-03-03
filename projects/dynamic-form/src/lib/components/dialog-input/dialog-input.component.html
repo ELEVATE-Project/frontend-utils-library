@@ -1,17 +1,18 @@
 <div class="dialog-header">
-  <mat-label mat-dialog-title>{{ dialogData?.header }}</mat-label>
-  <mat-icon class="mat-cancel-icon" [mat-dialog-close]="false"
-    >cancel_circle_outline</mat-icon
-  >
+  <h2>{{ dialogData?.header }}</h2>
+  <mat-icon class="mat-cancel-icon" [mat-dialog-close]="false" style="cursor: pointer"
+    >cancel_circle_outline</mat-icon>
 </div>
+<hr>
 <div mat-dialog-content>
-  <mat-form-field style="width: 100%" floatLabel="always">
+  <mat-form-field style="width: 100%" floatLabel="always" appearance="outline">
     <mat-label>{{ dialogData?.label }}</mat-label>
     <input
       matInput
       [(ngModel)]="data"
       [required]="dialogData?.required"
       [maxlength]="dialogData?.maxLength"
+      [placeholder]="dialogData?.placeHolder"
     />
   </mat-form-field>
 </div>

@@ -9,3 +9,8 @@
 .mat-mdc-form-field-focus-overlay{
   opacity: 0 !important;
 }
+
+.no-bottom-line .mdc-line-ripple::before{
+  position: relative;
+  display: none;
+}

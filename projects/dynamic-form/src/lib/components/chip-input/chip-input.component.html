@@ -25,13 +25,13 @@
       (click)="addOption()"
       style="cursor: pointer"
     >
-      <mat-icon>add_circle</mat-icon> Add
+      <span class="add-chips"><mat-icon>add_circle</mat-icon> Add</span>
     </mat-chip>
   </div>
   <mat-slide-toggle
     *ngIf="chipControl?.meta?.showSelectAll"
     [(ngModel)]="enableSelectAll"
-    (change)="toggleSelectAll()"
+    (change)="toggleSelectAll($event)"
     color="primary"
   ></mat-slide-toggle>
 </mat-chip-listbox>

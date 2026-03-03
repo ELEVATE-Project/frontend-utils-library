@@ -5,9 +5,9 @@ mat-form-field{
 .error-message{
     display: flex;
     flex-direction: row;
-    font-size: 14px;
-    margin-top: -30px;
-    margin-bottom: 20px;
+    align-items: center;
+    font-size: 12px;
+    padding: 0.125rem 0;
 }
 
 .error-icon{
@@ -34,4 +34,75 @@ mat-label{
     display: flex;
     flex-direction: column;
     gap: 2px;
+}
+.resource-button {
+    display: flex;
+    align-items: center;
+    color:  #0a4f9d;
+}
+.resource-items-container {
+    display: flex;
+    align-items: center;
+    background: lightgray;
+    justify-content: space-between;
+    padding: 0 1rem;
+    border-radius: 5px;
+    margin-bottom: .5rem;
+    min-height: 2.5rem;
+}
+.resouce-inner-section {
+    display: flex;
+    align-items: center;
+}
+
+::ng-deep  .mat-mdc-form-field-subscript-wrapper{
+    display: none !important; 
+  }
+
+.error-container {
+    display: flex;
+    height: 2.000rem;
+}
+     
+.disabled-with-pointer-events{
+    pointer-events: none;
+    opacity: 1;  
+}
+
+::ng-deep .mat-mdc-form-field .mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label--float-above {
+    pointer-events: none;
+}
+
+.info-icon{
+    color: #80868B; 
+    cursor: pointer;
+    position: absolute;
+    top: 0rem;
+    right: -1.5rem;
+    font-size: 1.25rem;
+    padding-left: 0.25rem;
+}
+
+.enable-with-pointer-events{
+    pointer-events: auto !important;
+}
+
+::ng-deep .info-tooltip .mdc-tooltip__surface {
+    font-size: 0.75rem !important;
+    background-color: #0a4f9d  !important;
+}
+
+::ng-deep .info-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%; 
+    left: 50%;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #0a4f9d transparent transparent transparent;
+}
+
+.visibility-hidden{
+    visibility: hidden; 
+    display:none !important;
 }

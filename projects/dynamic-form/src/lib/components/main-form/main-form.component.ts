@@ -1,8 +1,9 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component,ElementRef,EventEmitter, HostListener, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
-import { MatDatepicker } from '@angular/material/datepicker';
+import { MatCalendarCellClassFunction, MatDatepicker } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTooltip } from '@angular/material/tooltip';
 import { AddResourceComponent } from '../add-resource/add-resource.component';
 
 interface JsonFormValidators {
@@ -62,12 +63,19 @@ export interface DynamicFormData {
 })
 export class MainFormComponent implements OnInit {
   @Input() formJson: any;
+  @Input() viewOnly: boolean = false;
   @Input() classFlex: any ;
+  @Input() allowOpenLinks:boolean = false;
   @Input() language: any
   myForm: FormGroup = this.fb.group({});
-  resources:any;
+  resources:any = [];
   @ViewChild('subform') subform: MainFormComponent | undefined
-
+  @Output() controlChange = new EventEmitter<any>(); // parent component can detect the particular form-control changed
+  @Output() formChange = new EventEmitter<any>();
+  @Output() onClickTriggerParent = new EventEmitter<any>();
+  @Output() onActionTriggerParent = new EventEmitter<any>();
+  // ViewChildren to capture all tooltip instances
+  @ViewChildren(MatTooltip) tooltips!: QueryList<MatTooltip>;
   public showSpinners = true;
   public showSeconds = false;
   public touchUi = false;
@@ -88,63 +96,70 @@ export class MainFormComponent implements OnInit {
   dependedParentDate: any;
   @ViewChild('picker') picker: MatDatepicker<Date> | undefined;
 
-constructor(private fb: FormBuilder,public dialog: MatDialog) {}
+constructor(private fb: FormBuilder,public dialog: MatDialog,  private eRef: ElementRef) {}
 
   ngOnInit() {
     this.createForm(this.formJson);
+    this.formJson.forEach((element:any) => {
+      if(element.type == "addResource"){
+        this.resources = element.value
+      }
+    });
   }
 
   createForm(controls: JsonFormControls[]) {
-    for (const control of controls) {
-      const validatorsToAdd = [];
-      for (const [key, value] of Object.entries(control.validators)) {
-        switch (key) {
-          case 'min':
-            validatorsToAdd.push(Validators.min(value));
-            break;
-          case 'max':
-            validatorsToAdd.push(Validators.max(value));
-            break;
-          case 'required':
-            if (value) {
-              validatorsToAdd.push(Validators.required);
-            }
-            break;
-          case 'requiredTrue':
-            if (value) {
-              validatorsToAdd.push(Validators.requiredTrue);
-            }
-            break;
-          case 'email':
-            if (value) {
-              validatorsToAdd.push(Validators.email);
-            }
-            break;
-          case 'minLength':
-            validatorsToAdd.push(Validators.minLength(value));
-            break;
-          case 'maxLength':
-            validatorsToAdd.push(Validators.maxLength(value));
-            break;
-          case 'pattern':
-            validatorsToAdd.push(Validators.pattern(value));
-            break;
-          case 'nullValidator':
-            if (value) {
-              validatorsToAdd.push(Validators.nullValidator);
-            }
-            break;
-          default:
-            break;
+    if(controls) {
+      for (const control of controls) {
+        const validatorsToAdd = [];
+        for (const [key, value] of Object.entries(control.validators)) {
+          switch (key) {
+            case 'min':
+              validatorsToAdd.push(Validators.min(value));
+              break;
+            case 'max':
+              validatorsToAdd.push(Validators.max(value));
+              break;
+            case 'required':
+              if (value) {
+                validatorsToAdd.push(Validators.required);
+              }
+              break;
+            case 'requiredTrue':
+              if (value) {
+                validatorsToAdd.push(Validators.requiredTrue);
+              }
+              break;
+            case 'email':
+              if (value) {
+                validatorsToAdd.push(Validators.email);
+              }
+              break;
+            case 'minLength':
+              validatorsToAdd.push(Validators.minLength(value));
+              break;
+            case 'maxLength':
+              validatorsToAdd.push(Validators.maxLength(value));
+              break;
+            case 'pattern':
+              validatorsToAdd.push(Validators.pattern(value));
+              break;
+            case 'nullValidator':
+              if (value) {
+                validatorsToAdd.push(Validators.nullValidator);
+              }
+              break;
+            default:
+              break;
+          }
         }
+        this.myForm.addControl(
+          control.name,
+          this.fb.control(
+            { value: control.value, disabled: control.disabled || false },
+            validatorsToAdd
+          )
+        );
       }
-      this.myForm.addControl(
-        control.name,
-        this.fb.control(
-          { value: control.value, disabled: control.disabled || false },
-          validatorsToAdd
-        )
-      );
     }
   }
 
@@ -175,32 +190,167 @@ constructor(private fb: FormBuilder,public dialog: MatDialog) {}
 
   onClickAddResource(control:any){
     let dialog = this.dialog.open(AddResourceComponent, {
+      disableClose: true,
       data: {
-        control:control.dialogData
+        control:control.dialogData,
+        language:this.language
       }
 
     });
     const componentInstance = dialog.componentInstance;
     componentInstance.saveLearningResource.subscribe((result: any) => {
       if (result) {
-        this.resources = result;
+        this.resources = this.resources ? this.resources.concat(result) : result;
           this.myForm.patchValue({
-            [control.name]:this.resources 
+            [control.name]:this.resources
           });
+          this.handleFocusOut()
       }
     });
   }
   addFields(controlName: any,value:any) {
     this.myForm.patchValue({
-      [controlName]:this.resources?.myForm.value
+      [controlName]:this.subform?.myForm?.value
     });
   }
 
   deleteResource(index:any,name:any){
      this.resources.splice(index,1)
      this.myForm.patchValue({
-      [name]:this.resources 
+      [name]:this.resources
+    });
+    this.handleFocusOut()
+  }
+
+
+  handleFocusOut(event?:any) {
+    if(this.subform?.myForm) {
+      this.myForm.value.recommended_duration = this.subform?.myForm.value;
+      // instead of recommended duration, in subfields meta, parent control name need to be added.
+    }
+    for (let key in this.myForm.value) {
+      this.myForm.value[key]= this.myForm.value[key].value ? this.myForm.value[key].value : this.myForm.value[key]
+    }
+    this.formChange.emit(this.myForm.value);
+    this.controlChange.emit( event?.target?.id ? event.target?.id : event)
+  }
+
+  showTooltip(index: number) {
+    const tooltipArray = this.tooltips.toArray();
+    tooltipArray.forEach((tooltip, i) => {
+      if (i === index) {
+        tooltip.disabled = false;
+        tooltip.show();
+      } else {
+        tooltip.disabled = true;
+        tooltip.hide();
+      }
     });
   }
 
+  hideTooltip(index: number) {
+    const tooltipArray = this.tooltips.toArray();
+    tooltipArray[index]?.hide();
+    tooltipArray[index].disabled = true;
+  }
+
+  // Listen to document clicks to hide tooltips when clicking outside
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    if (!this.eRef.nativeElement.contains(event.target)) {
+      this.tooltips.forEach(tooltip => {
+        tooltip.hide();
+        tooltip.disabled = true;
+      });
+    }
+  }
+
+  togglefield(event:any) {
+    if(this.viewOnly){
+      event.source.checked = !event.checked;
+    }
+  }
+
+  navigateToParent(control:any){
+    this.onClickTriggerParent.emit(control);
+  }
+
+  OnActionTriggerParent(action:any,i:any, item:any){
+    let control = {
+      action: action,
+      item: item,
+      index: i,
+    };
+    this.onActionTriggerParent.emit(control);
+  }
+
+checkminDate(control: any) {
+  // No restriction in view mode
+  if (this.viewOnly || control.viewOnly) {
+    return null;
+  }
+  // If End Date (has minDependentChild = startDate)
+  if (control.minDependentChild) {
+    const dependent = this.myForm.get(control.minDependentChild)?.value;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (dependent) {
+      const startDate = new Date(dependent);
+      startDate.setHours(0, 0, 0, 0);
+
+      // End Date must be greater than both startDate and today
+      return startDate > today ? startDate : today;
+    }
+
+    // If no startDate selected yet, just use today
+    return today;
+  }
+
+  // For Start Date, no min restriction
+  return null;
+}
+
+checkmaxDate(control: any) {
+  // No restriction in view mode
+  if (this.viewOnly || control.viewOnly) {
+    return null;
+  }
+
+  // If Start Date (has maxDependentChild = endDate)
+  if (control.maxDependentChild) {
+    const dependent = this.myForm.get(control.maxDependentChild)?.value;
+
+    if (dependent) {
+      return new Date(dependent); // Start Date must be less than End Date
+    }
+  }
+  // Otherwise, no max restriction
+  return null;
+}
+
+  getAdjustedDate(control:any): any {
+    let rawDate = this.myForm.get(control.name)
+    if(control.name === 'endDate' || control.name === 'end_date'){
+      const date = new Date(rawDate?.value);
+      date.setHours(23, 59, 59, 999);// Set to 11:59 PM UTC
+      this.myForm.patchValue({
+        [control.name]:date
+      });
+    }else{
+      let date= new Date(rawDate?.value);
+      date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+      this.myForm.patchValue({
+        [control.name]:date
+      });
+    }
+    this.handleFocusOut(control);
+  }
+
+  openResourceLink(url:any){
+    if(this.allowOpenLinks){
+      window.open(url, '_blank');
+    }
+  }
+  
 }

@@ -20,7 +20,9 @@ import { RadioInputComponent } from './components/radio-input/radio-input.compon
 import { CheckboxInputComponent } from './components/checkbox-input/checkbox-input.component';
 import { StarRatingComponent } from './components/star-rating/star-rating.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTooltipModule, MatTooltip } from '@angular/material/tooltip';
 import { AddResourceComponent } from './components/add-resource/add-resource.component';
+import { MatNativeDateModule } from '@angular/material/core';
 import { LanguageTranslatePipe } from './pipes/language-translate.pipe';
 
 @NgModule({
@@ -51,6 +53,9 @@ import { LanguageTranslatePipe } from './pipes/language-translate.pipe';
     MatCheckboxModule,
     MatRadioModule,
     MatDatepickerModule,
+    MatNativeDateModule,
+    MatTooltipModule,
+    MatTooltip
   ],
   exports: [MainFormComponent, LanguageTranslatePipe],
   schemas:[NO_ERRORS_SCHEMA],

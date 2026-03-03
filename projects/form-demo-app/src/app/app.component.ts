@@ -19,6 +19,10 @@ export class AppComponent {
     this.data = sampleData
   }
 
+  getDynamicFormData(data:any) {
+    console.log(data)
+  }
+
   submitData(){
     console.log('Form value: ',this.formLib?.myForm.value)
   }

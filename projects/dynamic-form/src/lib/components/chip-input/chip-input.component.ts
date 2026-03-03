@@ -16,6 +16,7 @@ import { DialogInputComponent } from '../dialog-input/dialog-input.component';
   ],
 })
 export class ChipInputComponent implements OnInit, ControlValueAccessor {
+  @Input() viewOnly = false;
   @Input() chipControl: any;
   selectedChips: any;
   enableSelectAll: boolean = false;
@@ -83,6 +84,7 @@ export class ChipInputComponent implements OnInit, ControlValueAccessor {
       data: {
         header: this.chipControl.meta.addNewPopupHeader,
         label: this.chipControl.meta.addNewPopupSubHeader,
+        placeHolder:this.chipControl.meta.placeHolder,
         required: true,
         maxLength: 20,
         buttonText: {
@@ -105,20 +107,25 @@ export class ChipInputComponent implements OnInit, ControlValueAccessor {
     });
   }
 
-  toggleSelectAll() {
-    this.markAsTouched();
-    if (this.enableSelectAll) {
-      this.chipControl.options.map((chipItem: any) => {
-        this.selectedChips.add(chipItem);
-      });
-    } else {
-      this.selectedChips.clear();
+  toggleSelectAll(event:any) {
+    if(this.viewOnly){
+      event.source.checked = !event.checked;
+    }else{
+      this.markAsTouched();
+      if (this.enableSelectAll) {
+        this.chipControl.options.map((chipItem: any) => {
+          this.selectedChips.add(chipItem);
+        });
+      } else {
+        this.selectedChips.clear();
+      }
+  
+      if (this.selectedChips.size) {
+        this.onChange([...this.selectedChips]);
+      } else {
+        this.onChange([]);
+      }
     }
-
-    if (this.selectedChips.size) {
-      this.onChange([...this.selectedChips]);
-    } else {
-      this.onChange([]);
-    }
+    
   }
 }

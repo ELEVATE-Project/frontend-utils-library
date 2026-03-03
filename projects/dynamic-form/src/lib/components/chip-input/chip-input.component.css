@@ -4,3 +4,10 @@
     flex: 1;
     flex-wrap: wrap;
 }
+
+.add-chips{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.3125rem;
+}
