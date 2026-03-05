@@ -1,37 +1,42 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { Component, OnChanges, AfterViewInit, DestroyRef, inject, input, signal } from '@angular/core';
 import { Chart } from 'chart.js/auto';
 import { GenericChartService } from '../../generic-chart.service';
 
 @Component({
   selector: 'lib-bar-chart',
+  standalone: true,
+  imports: [],
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.css']
 })
-export class BarChartComponent implements OnInit {
-  @Input() url: any;
-  @Input() headers: any;
-  @Input() legends :any;
-  @Input() sessionType :any;
-  @Input() chartBody: any;
-  @Input() scrollLabel: any;
-data : any
-isMobile : boolean = false;
-  private chart: Chart | undefined;
-  hasData: any = false;
-  constructor(private cdr: ChangeDetectorRef, private apiService : GenericChartService) { }
+export class BarChartComponent implements AfterViewInit, OnChanges {
+  readonly url = input<any>();
+  readonly headers = input<any>();
+  readonly legends = input<any>();
+  readonly sessionType = input<any>();
+  readonly chartBody = input<any>();
+  readonly scrollLabel = input<any>();
 
-  ngOnInit(): void {
-  }
+  data = signal<any>(null);
+  isMobile = signal<boolean>(false);
+  hasData = signal<boolean>(false);
+
+  private chart: Chart | undefined;
+  private readonly apiService = inject(GenericChartService);
+  private readonly destroyRef = inject(DestroyRef);
+
   ngAfterViewInit() {
-    this.isMobile = window.innerWidth < 768;
-    let url = this.url;
-    let headers = this.headers;
-      setTimeout(() => {
-        this.getChartData();
-        // this.initializeChart();
-      }, 100);
-          window.addEventListener('resize', this.onResize.bind(this));
-        }
+    this.isMobile.set(window.innerWidth < 768);
+    setTimeout(() => {
+      this.getChartData();
+    }, 100);
+
+    const onResize = this.onResize.bind(this);
+    window.addEventListener('resize', onResize);
+    this.destroyRef.onDestroy(() => {
+      window.removeEventListener('resize', onResize);
+    });
+  }
 
   ngOnChanges() {
     if (this.chart) {
@@ -39,23 +44,20 @@ isMobile : boolean = false;
       this.chart = undefined;
     }
 
-    if (this.url && this.headers) {
+    if (this.url() && this.headers()) {
       this.initializeChart();
     }
   }
 
-  async getChartData(){
-    const paylaod  ={url : this.url, headers : this.headers, entityType: this.chartBody}
-    const params = new URL(this.url).searchParams;
+  async getChartData() {
+    const payload = { url: this.url(), headers: this.headers(), entityType: this.chartBody() };
+    const params = new URL(this.url()).searchParams;
     const groupBy = params.get('group_by');
-    this.apiService.post(paylaod).then(async (data: any) => {
-      let showMonthName : boolean = false;
-      if(groupBy == "month"){
-        showMonthName = true;
-      }
-     this.data = await this.apiService.transformApiResponse(data,this.legends, showMonthName);
+    this.apiService.post(payload).then(async (responseData: any) => {
+      const showMonthName: boolean = groupBy === 'month';
+      this.data.set(await this.apiService.transformApiResponse(responseData, this.legends(), showMonthName));
       this.initializeChart();
-    })
+    });
   }
 
   private initializeChart() {
@@ -64,31 +66,33 @@ isMobile : boolean = false;
       this.chart.destroy();
       this.chart = undefined;
     }
-    this.hasData = this.data ? this.checkIfAnyDataExists(this.data?.datasets): true;
-    if (!this.hasData) {
+    const currentData = this.data();
+    this.hasData.set(currentData ? this.checkIfAnyDataExists(currentData?.datasets) : true);
+
+    if (!this.hasData()) {
       const containerElement = document.getElementById('chartContainer');
       if (containerElement) {
-        containerElement.innerHTML = '<h1 style="color: #832215; background-color: #f8f9fa; text-align: center; padding: 20px 0; width: 100%;">No sessions</h1>';
+        containerElement.innerHTML = '<h1 class="no-data-row">No sessions</h1>';
       }
       return;
     }
-  
+
     if (chartElement) {
-      const dataLength = this.data.labels?.length || 0;
+      const dataLength = currentData.labels?.length || 0;
       const canvasParent = document.getElementById('chartContainer');
       if (canvasParent) {
-        const chartWidth = dataLength * (this.isMobile ? 40 : 25); // tweak per bar width
+        const chartWidth = dataLength * (this.isMobile() ? 40 : 25);
         chartElement.style.width = `${chartWidth}px`;
       }
-    
+
       this.chart = new Chart(chartElement, {
         type: 'bar',
         data: {
-          ...this.data,
-          datasets: this.data.datasets.map((dataset: any) => ({
+          ...currentData,
+          datasets: currentData.datasets.map((dataset: any) => ({
             ...dataset,
-            barThickness: this.isMobile ? 10 : 20,
-            gap:3
+            barThickness: this.isMobile() ? 10 : 20,
+            gap: 3
           })),
         },
         options: {
@@ -110,7 +114,7 @@ isMobile : boolean = false;
           scales: {
             x: {
               ticks: {
-                autoSkip: false, // 👈 ensures all labels show
+                autoSkip: false,
               },
               grid: {
                 display: false,
@@ -128,23 +132,16 @@ isMobile : boolean = false;
           },
         },
       });
-    
-      this.cdr.detectChanges();
     }
   }
-  
 
   private onResize() {
     if (this.chart) {
       this.chart.resize();
     }
   }
-  ngOnDestroy() {
-    window.removeEventListener('resize', this.onResize.bind(this));
-  }
 
   checkIfAnyDataExists(datasets: { label: string; data: number[] }[]): boolean {
     return datasets.some(dataset => dataset?.data.some(value => value > 0));
   }
-
 }
