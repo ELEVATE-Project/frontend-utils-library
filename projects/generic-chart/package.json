@@ -1,13 +1,17 @@
 {
   "name": "generic-chart",
-  "version": "0.0.1",
+  "version": "1.2.27",
+   "author" :"Vishwanath",
   "peerDependencies": {
-    "@angular/common": "^17.3.0",
-    "@angular/core": "^17.3.0",
-    "chart.js": "^4.4.6"
+    "@angular/common": "^21.0.0",
+    "@angular/core": "^21.0.0",
+    "moment": "^2.30.1"
+  },
+  "repository":{
+    "type":"git",
+    "link":"https://github.com/vishwanath1004/frontend-util-library-from-rahul"
   },
   "dependencies": {
     "tslib": "^2.3.0"
-  },
-  "sideEffects": false
+  }
 }

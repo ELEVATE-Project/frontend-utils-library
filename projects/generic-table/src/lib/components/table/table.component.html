@@ -1,0 +1,182 @@
+@if (!hasData() && !hasFiltersData()) {
+  <div class="no-data-row">
+    <h1>{{ metaKeys()?.noSessions }}</h1>
+  </div>
+}
+
+@if (hasData() || hasFiltersData()) {
+  <div class="mat-elevation-z8">
+    <div class="table-container" [class.isMobileTableContainer]="isMobile()">
+
+      <!-- Header Bar -->
+      <div class="header">
+        <div class="title" [class.isMobileTitle]="isMobile()">{{ title() }}</div>
+        <div>
+          @if (hasFiltersData() || sortColumn) {
+            <button mat-raised-button color="primary" (click)="clearFilters()" class="x-button">
+              {{ metaKeys()?.clearFilters }}
+            </button>
+          }
+          @if (showDownload()) {
+            <button mat-raised-button color="primary" (click)="openPopup()" class="x-button">
+              {{ metaKeys()?.downloadTable }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div style="overflow: auto; max-height: 65vh;">
+        <table mat-table [dataSource]="dataSource" class="full-width-table">
+
+          @for (column of displayedColumns(); track column; let i = $index) {
+            <ng-container [matColumnDef]="column">
+              <th class="mat-header-cell" *matHeaderCellDef style="border-bottom: 1px solid #ccc;">
+                <div class="header-container">
+                  <div class="header-label" [class.isMobileHeaderLabel]="isMobile()">
+                    {{ getHeaderLabel(column) }}
+                    <mat-icon
+                      fontSet="material-symbols-outlined"
+                      style="cursor: pointer; overflow: unset;"
+                      (click)="onSort(column)">
+                      swap_vert
+                    </mat-icon>
+                  </div>
+
+                  @if (isSearchable(column)) {
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ metaKeys()?.search }}</mat-label>
+                      <input
+                        matInput
+                        type="text"
+                        placeholder="Search"
+                        (click)="$event.stopPropagation()"
+                        (input)="onSearch($event, column)"
+                        [(ngModel)]="searchValues[column]"
+                      />
+                      <mat-icon matPrefix fontSet="material-symbols-outlined">search</mat-icon>
+                    </mat-form-field>
+                    @if (activeSearchColumn() === column && !isValidSearch()) {
+                      <mat-error>{{ metaKeys()?.invalidSearch }}</mat-error>
+                    }
+                  }
+
+                  @if (isFilterable(column)) {
+                    <mat-form-field appearance="outline">
+                      <mat-select
+                        [(ngModel)]="filterValues[column]"
+                        (selectionChange)="onFilter($event, column)"
+                        [multiple]="checkMultiple(column)"
+                        [placeholder]="metaKeys()?.select"
+                        style="padding: unset !important;"
+                        [compareWith]="compareWithArray">
+                        @for (option of getFilterOptions(column); track option.value) {
+                          <mat-option [value]="option.value">{{ option.label }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+                  }
+
+                  @if (isDatePicker(column)) {
+                    <mat-form-field appearance="outline">
+                      <mat-label>{{ metaKeys()?.selectDate }}</mat-label>
+                      <input
+                        matInput
+                        [matDatepicker]="colPicker"
+                        (click)="colPicker.open()"
+                        (dateChange)="onDate($event, column)"
+                        placeholder="Choose a date"
+                        [(ngModel)]="dateFilters[column]"
+                      />
+                      <mat-datepicker-toggle matSuffix [for]="colPicker"></mat-datepicker-toggle>
+                      <mat-datepicker #colPicker></mat-datepicker>
+                    </mat-form-field>
+                  }
+
+                </div>
+              </th>
+
+              <td
+                mat-cell
+                *matCellDef="let element"
+                [class.fixed-column]="i === 0"
+                [matTooltip]="element[column]">
+                <div class="ellipsis" [class.isMobileEllipsis]="isMobile()">
+                  {{ element[column] }}
+                </div>
+              </td>
+            </ng-container>
+          }
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns();"></tr>
+        </table>
+      </div>
+
+      @if (!hasData()) {
+        <div class="no-data-row">
+          <div style="text-align: center; padding: 20px;">{{ metaKeys()?.noData }}</div>
+        </div>
+      }
+
+      <mat-paginator
+        [length]="tableDataCount()"
+        [pageSizeOptions]="pageSizeOptions"
+        [pageSize]="pageSize"
+        showFirstLastButtons
+        (page)="onPageChange($event)">
+      </mat-paginator>
+    </div>
+
+    <!-- Date Range Download Popup -->
+    @if (showPopup()) {
+      <div class="overlay"></div>
+      <div class="centered-popup">
+        <h2>{{ metaKeys()?.selectDateRange }}</h2>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ metaKeys()?.startDate }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="startPicker"
+            [(ngModel)]="startDate"
+            (ngModelChange)="validateDates(); formatDate(startDate)"
+          />
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ metaKeys()?.endDate }}</mat-label>
+          <input
+            matInput
+            [matDatepicker]="endPicker"
+            [(ngModel)]="endDate"
+            (ngModelChange)="validateDates(); formatDate(endDate)"
+          />
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+
+        @if (dateError()) {
+          <div class="error">{{ metaKeys()?.reportDateError }}</div>
+        }
+        @if (noData()) {
+          <div class="error">{{ metaKeys()?.reportTableNoSessions }}</div>
+        }
+
+        <div class="actions">
+          <button mat-button (click)="closePopup()">{{ metaKeys()?.cancel }}</button>
+          <button
+            mat-button
+            [style.background-color]="(!startDate || !endDate) ? '#898989' : 'var(--ion-color-primary)'"
+            style="color: #fff;"
+            (click)="submitDates()"
+            [disabled]="dateError() || (!startDate || !endDate)">
+            {{ metaKeys()?.submit }}
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+}

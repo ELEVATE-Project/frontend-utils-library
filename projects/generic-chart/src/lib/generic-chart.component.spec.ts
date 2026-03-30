@@ -8,10 +8,12 @@ describe('GenericChartComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GenericChartComponent]
+      declarations: [ GenericChartComponent ]
     })
     .compileComponents();
-    
+  });
+
+  beforeEach(() => {
     fixture = TestBed.createComponent(GenericChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

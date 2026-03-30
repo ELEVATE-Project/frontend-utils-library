@@ -3,8 +3,5 @@
   "dest": "../../dist/generic-chart",
   "lib": {
     "entryFile": "src/public-api.ts"
-  },
-  "allowedNonPeerDependencies": [
-    "chart.js"
-  ]
+  }
 }

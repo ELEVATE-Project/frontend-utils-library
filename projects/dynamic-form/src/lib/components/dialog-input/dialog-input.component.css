@@ -1,9 +1,0 @@
-.dialog-header{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.buttons-section{
-    justify-content: end;
-}

@@ -3,137 +3,6 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "dynamic-form": {
-      "projectType": "library",
-      "root": "projects/dynamic-form",
-      "sourceRoot": "projects/dynamic-form/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "project": "projects/dynamic-form/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/dynamic-form/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/dynamic-form/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/dynamic-form/src/test.ts",
-            "tsConfig": "projects/dynamic-form/tsconfig.spec.json",
-            "karmaConfig": "projects/dynamic-form/karma.conf.js"
-          }
-        }
-      }
-    },
-    "form-demo-app": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss"
-        }
-      },
-      "root": "projects/form-demo-app",
-      "sourceRoot": "projects/form-demo-app/src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "outputPath": "dist/form-demo-app",
-            "index": "projects/form-demo-app/src/index.html",
-            "main": "projects/form-demo-app/src/main.ts",
-            "polyfills": "projects/form-demo-app/src/polyfills.ts",
-            "tsConfig": "projects/form-demo-app/tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/form-demo-app/src/favicon.ico",
-              "projects/form-demo-app/src/assets"
-            ],
-            "styles": [
-              "projects/form-demo-app/src/styles.scss"
-            ],
-            "scripts": []
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "projects/form-demo-app/src/environments/environment.ts",
-                  "with": "projects/form-demo-app/src/environments/environment.prod.ts"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "development": {
-              "buildOptimizer": false,
-              "optimization": false,
-              "vendorChunk": true,
-              "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "configurations": {
-            "production": {
-              "buildTarget": "form-demo-app:build:production"
-            },
-            "development": {
-              "buildTarget": "form-demo-app:build:development"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "form-demo-app:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/form-demo-app/src/test.ts",
-            "polyfills": "projects/form-demo-app/src/polyfills.ts",
-            "tsConfig": "projects/form-demo-app/tsconfig.spec.json",
-            "karmaConfig": "projects/form-demo-app/karma.conf.js",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/form-demo-app/src/favicon.ico",
-              "projects/form-demo-app/src/assets"
-            ],
-            "styles": [
-              "projects/form-demo-app/src/styles.scss"
-            ],
-            "scripts": []
-          }
-        }
-      }
-    },
     "generic-chart": {
       "projectType": "library",
       "root": "projects/generic-chart",
@@ -158,11 +27,112 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "main": "projects/generic-chart/src/test.ts",
             "tsConfig": "projects/generic-chart/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
+            "karmaConfig": "projects/generic-chart/karma.conf.js"
+          }
+        }
+      }
+    },
+    "demo-app": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "projects/demo-app",
+      "sourceRoot": "projects/demo-app/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/demo-app",
+            "index": "projects/demo-app/src/index.html",
+            "main": "projects/demo-app/src/main.ts",
+            "polyfills": "projects/demo-app/src/polyfills.ts",
+            "tsConfig": "projects/demo-app/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/demo-app/src/favicon.ico",
+              "projects/demo-app/src/assets"
+            ],
+            "styles": [
+              "projects/demo-app/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "projects/demo-app/src/environments/environment.ts",
+                  "with": "projects/demo-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "demo-app:build:production"
+            },
+            "development": {
+              "browserTarget": "demo-app:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "demo-app:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/demo-app/src/test.ts",
+            "polyfills": "projects/demo-app/src/polyfills.ts",
+            "tsConfig": "projects/demo-app/tsconfig.spec.json",
+            "karmaConfig": "projects/demo-app/karma.conf.js",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/demo-app/src/favicon.ico",
+              "projects/demo-app/src/assets"
+            ],
+            "styles": [
+              "projects/demo-app/src/styles.scss"
+            ],
+            "scripts": []
           }
         }
       }
@@ -191,16 +161,77 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "main": "projects/generic-table/src/test.ts",
             "tsConfig": "projects/generic-table/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
+            "karmaConfig": "projects/generic-table/karma.conf.js"
+          }
+        }
+      }
+    },
+    "table": {
+      "projectType": "library",
+      "root": "projects/table",
+      "sourceRoot": "projects/table/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/table/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/table/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/table/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/table/src/test.ts",
+            "tsConfig": "projects/table/tsconfig.spec.json",
+            "karmaConfig": "projects/table/karma.conf.js"
+          }
+        }
+      }
+    },
+    "tables": {
+      "projectType": "library",
+      "root": "projects/tables",
+      "sourceRoot": "projects/tables/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/tables/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/tables/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/tables/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/tables/src/test.ts",
+            "tsConfig": "projects/tables/tsconfig.spec.json",
+            "karmaConfig": "projects/tables/karma.conf.js"
           }
         }
       }
     }
   },
+  "defaultProject": "generic-chart",
   "cli": {
     "analytics": false
   }
