@@ -1,20 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'lib-generic-chart',
+  standalone: true,
+  imports: [],
   template: `
     <p>
       generic-chart works!
     </p>
   `,
-  styles: [
-  ]
+  styles: []
 })
-export class GenericChartComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
+export class GenericChartComponent { }

@@ -1,5 +1,6 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
 import * as moment from 'moment';
 
 @Injectable({
@@ -14,7 +15,7 @@ export class GenericChartService {
     const options = {
       headers: headers
     };
-    return this.http.get(requestParam.url, options).toPromise()
+    return lastValueFrom(this.http.get(requestParam.url, options))
       .then((data: any) => {
         let result: any = data;
         if (result.responseCode === "OK") {
@@ -30,7 +31,7 @@ export class GenericChartService {
     const options = {
       headers: headers
     };
-    return this.http.post(requestParam.url,requestParam?.entityType, options).toPromise()
+    return lastValueFrom(this.http.post(requestParam.url, requestParam?.entityType, options))
       .then((data: any) => {
         let result: any = data;
         if (result.responseCode === "OK") {
@@ -88,8 +89,3 @@ export class GenericChartService {
     return `rgba(${r}, ${g}, ${b}, 0.6)`;
   }
 }
-
-
-
-
-

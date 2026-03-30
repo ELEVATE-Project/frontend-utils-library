@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'lib-generic-table',
+  standalone: true,
+  imports: [],
   template: `
     <p>
       generic-table works!

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
 
 import { BarChartComponent } from './bar-chart.component';
 
@@ -8,7 +9,8 @@ describe('BarChartComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BarChartComponent ]
+      imports: [BarChartComponent],
+      providers: [provideHttpClient()]
     })
     .compileComponents();
   });

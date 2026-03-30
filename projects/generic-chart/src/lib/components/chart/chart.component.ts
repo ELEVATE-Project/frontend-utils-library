@@ -1,20 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'lib-chart',
+  standalone: true,
+  imports: [],
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.css']
 })
-export class ChartComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+export class ChartComponent {
   public data = {
     labels: [
-      "January", "February", "March", "April", "May", 
-      "June", "July", "August", "September", "October", 
+      "January", "February", "March", "April", "May",
+      "June", "July", "August", "September", "October",
       "November", "December"
     ],
     datasets: [

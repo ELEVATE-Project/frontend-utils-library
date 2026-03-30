@@ -231,5 +231,8 @@
       }
     }
   },
-  "defaultProject": "generic-chart"
+  "defaultProject": "generic-chart",
+  "cli": {
+    "analytics": false
+  }
 }
